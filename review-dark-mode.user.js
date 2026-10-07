@@ -1,8 +1,10 @@
 // ==UserScript==
-// @name        WaniKani Review Dark Mode
+// @name        WaniKani Dark Mode
 // @namespace   CalebReviewDark
-// @version     2.0.8
-// @description Applies a muted near-black theme across WaniKani, including quizzes and userscript panels.
+// @version     2.1.0
+// @description A site-wide near-black theme for WaniKani: dashboard, lessons, reviews, item pages, settings, and userscript panels.
+// @homepageURL https://github.com/cabe9/wanikani-review-dark-mode
+// @supportURL  https://github.com/cabe9/wanikani-review-dark-mode/issues
 // @license     MIT
 // @match       https://www.wanikani.com/*
 // @match       https://preview.wanikani.com/*
@@ -41,6 +43,7 @@
     }
 
     function updateTheme() {
+        installStyles()
         document.documentElement.classList.add(ROOT_CLASS)
         if (isQuizPage()) startResultObserver()
         else stopResultObserver()
@@ -204,6 +207,351 @@
                 --color-button-secondary-icon: var(--wkrd-muted);
                 --color-button-frameless-text: #c0c7cc;
                 --color-focus-ring: #78a9be;
+
+                /* Shared native tokens cover pages outside the review interface. */
+                --color-app-background: var(--wkrd-bg);
+                --color-title-underline: var(--wkrd-border);
+                --color-link-hover: #b8dbe9;
+                --color-link-active: #b8dbe9;
+                --color-focus: var(--wkrd-focus);
+                --color-radical: #176384;
+                --color-radical-dark: #124c66;
+                --color-radical-highlight: #57b6dc;
+                --color-radical-lowlight: #103e52;
+                --color-kanji: #812456;
+                --color-kanji-dark: #652044;
+                --color-kanji-highlight: #d473aa;
+                --color-kanji-lowlight: #481b3a;
+                --color-vocabulary: #593180;
+                --color-vocabulary-dark: #452763;
+                --color-vocabulary-highlight: #a982d2;
+                --color-vocabulary-lowlight: #35204f;
+                --color-locked: #41474d;
+                --color-locked-dark: #353a3f;
+                --color-locked-highlight: #596169;
+                --color-locked-lowlight: #30353a;
+                --color-text-highlight-radical-background: #1d5065;
+                --color-text-highlight-radical-text: #e0f3fb;
+                --color-text-highlight-kanji-background: #652448;
+                --color-text-highlight-kanji-text: #ffe3f1;
+                --color-text-highlight-vocabulary-background: #4e3168;
+                --color-text-highlight-vocabulary-text: #f1e4ff;
+                --color-text-highlight-meaning-background: #3c4249;
+                --color-text-highlight-meaning-text: var(--wkrd-text);
+                --color-text-highlight-reading-background: #28543f;
+                --color-text-highlight-reading-text: #e2f7eb;
+                --color-page-header-title: var(--wkrd-text);
+                --color-page-header-subtitle: var(--wkrd-muted);
+                --color-page-header-description: var(--wkrd-muted);
+                --color-page-nav-header-icon: var(--wkrd-muted);
+                --color-global-header-background: var(--wkrd-surface);
+                --color-global-header-border: var(--wkrd-border);
+                --color-hint-background: var(--wkrd-surface-raised);
+                --color-text-shadow-light: transparent;
+                --text-shadow-light: none;
+                --color-input-background: #111315;
+                --color-input-border: var(--wkrd-border-strong);
+                --color-input-focus-border: var(--wkrd-focus);
+                --color-code-text: #f4afca;
+                --color-code-background: var(--wkrd-surface-raised);
+                --color-code-border: var(--wkrd-border);
+                --color-form-error-text: #ffadb7;
+                --color-form-error-background: #45262c;
+                --color-form-error-text-shadow: transparent;
+                --color-form-control-indicator-success: #9bd5ac;
+                --color-form-control-indicator-loading: var(--wkrd-muted);
+                --color-alert-error-background: #45262c;
+                --color-alert-error-text: #ffdfe2;
+                --color-alert-error-border: #8a414b;
+                --color-alert-info-background: #243542;
+                --color-alert-info-text: #d8eaf4;
+                --color-alert-info-border: #54788b;
+                --color-notification-error-background: #45262c;
+                --color-notification-error-border: #8a414b;
+                --color-notification-error-icon: #ffadb7;
+                --color-notification-error-reload: #ffdfe2;
+                --color-notification-info-background: #243542;
+                --color-notification-info-border: #54788b;
+                --color-notification-info-icon: #a9d6ed;
+                --color-notification-info-reload: #d8eaf4;
+                --color-notification-success-background: #254b35;
+                --color-notification-success-border: #3f7655;
+                --color-notification-success-icon: #9bd5ac;
+                --color-notification-success-reload: #dcf3e3;
+                --color-button-icon-only-text: var(--wkrd-muted);
+                --color-button-icon-only-hover-background: var(--wkrd-surface-hover);
+                --color-button-icon-only-active-background: var(--wkrd-surface-hover);
+                --color-button-frameless-icon: var(--wkrd-muted);
+                --color-button-frameless-hover-background: var(--wkrd-surface-hover);
+                --color-button-frameless-active-background: var(--wkrd-surface-hover);
+                --color-chip-background: var(--wkrd-surface-raised);
+                --color-chip-border: var(--wkrd-border);
+                --color-chip-text: var(--wkrd-text);
+                --color-chip-hover-background: var(--wkrd-surface-hover);
+                --color-chip-hover-border: var(--wkrd-border-strong);
+                --color-chip-hover-text: var(--wkrd-text);
+                --color-chip-active-background: #315568;
+                --color-chip-active-border: var(--wkrd-focus);
+                --color-chip-active-text: var(--wkrd-text);
+
+                /* Lessons, subject lists, and item details use the same palette. */
+                --colorSlideBackground: var(--wkrd-surface);
+                --colorSlideBorder: var(--wkrd-border);
+                --colorSlideShadow: transparent;
+                --color-subject-slide-navigation-background: var(--wkrd-surface-raised);
+                --color-subject-slide-navigation-button-hover: var(--wkrd-surface-hover);
+                --color-section-header-border: var(--wkrd-border);
+                --color-section-subtitle: var(--wkrd-muted);
+                --color-mnemonic-image-background: var(--wkrd-surface-raised);
+                --color-lesson-picker-footer-background: #1c1f22ee;
+                --color-lesson-picker-footer-border: 1px solid var(--wkrd-border);
+                --color-lesson-and-review-border: var(--wkrd-border);
+                --color-lesson-and-review-border-hover: var(--wkrd-focus);
+                --color-lesson-and-review-count-background: var(--wkrd-surface-hover);
+                --color-lesson-and-review-count-zero-background: var(--wkrd-surface-raised);
+                --color-subject-list-separator: var(--wkrd-border);
+                --color-subject-legend-title: var(--wkrd-muted);
+                --color-subject-character-secondary-info: var(--wkrd-muted);
+                --color-subject-character-grid-header-background: var(--wkrd-surface);
+                --color-subject-character-grid-header-title: var(--wkrd-text);
+                --color-subject-character-grid-header-subtitle: var(--wkrd-muted);
+                --color-subject-character-grid-item-background: var(--wkrd-surface-raised);
+                --color-subject-character-grid-item-border: var(--wkrd-border);
+                --color-subject-page-header-border: var(--wkrd-border);
+                --color-subject-srs-progress-stage-background: var(--wkrd-surface-hover);
+                --color-subject-srs-progress-text: var(--wkrd-muted);
+                --color-user-note-count: var(--wkrd-muted);
+                --color-recent-mistakes-intro-divider: var(--wkrd-border);
+                --color-last-item-border: var(--wkrd-border);
+                --color-last-item-section-divider: var(--wkrd-border);
+                --color-last-item-correct-icon: #9bd5ac;
+                --color-last-item-incorrect-icon: #ffadb7;
+                --color-wk-panel-content-title-underline: var(--wkrd-border);
+                --colorAdditionalInfoButtonBackground: var(--wkrd-surface);
+                --colorAdditionalInfoButtonShadow: transparent;
+                --colorAdditionalInfoButtonText: var(--wkrd-text);
+                --colorAdditionalInfoButtonDisabledBackground: #1a1c1f;
+                --colorAdditionalInfoButtonDisabledShadow: transparent;
+                --colorAdditionalInfoButtonDisabledText: #717980;
+                --colorAdditionalInfoButtonActiveBackground: var(--wkrd-surface-hover);
+                --colorAdditionalInfoButtonActiveShadow: transparent;
+                --colorAdditionalInfoButtonActiveText: var(--wkrd-text);
+                --colorAdditionalInfoBackground: var(--wkrd-bg);
+                --colorAdditionalInfoBorder: var(--wkrd-border);
+                --colorAdditionalInfoShadow: transparent;
+                --colorQuizExceptionBackground: var(--wkrd-surface-raised);
+                --colorQuizExceptionShadow: transparent;
+                --colorQuizExceptionText: var(--wkrd-text);
+
+                /* Forms, account pages, and dialogs. */
+                --color-modal-background: var(--wkrd-surface-raised);
+                --color-setting-divider: var(--wkrd-border);
+                --color-authentication-footer-divider: var(--wkrd-border);
+                --color-subscription-plan-background: var(--wkrd-surface);
+                --color-subscription-plan-border: var(--wkrd-border);
+                --color-subscription-plan-divider: var(--wkrd-border);
+                --color-billing-plan-background: var(--wkrd-surface);
+                --color-billing-plan-border: var(--wkrd-border);
+                --color-billing-plan-title-background: var(--wkrd-surface-raised);
+                --color-billing-receipt-background-hover: var(--wkrd-surface-hover);
+                --color-billing-activation-error: #ffadb7;
+                --color-public-profile-info-background: var(--wkrd-surface);
+                --color-public-profile-info-text: var(--wkrd-muted);
+                --color-public-profile-avatar-border: var(--wkrd-border);
+                --color-count_bubble-background: var(--wkrd-surface-raised);
+                --color-count_bubble-text: var(--wkrd-text);
+
+                /* Dashboard charts, empty states, and widget customization. */
+                --color-empty-widget-background: var(--wkrd-surface);
+                --color-placeholder-pulse-default-stop-1: var(--wkrd-surface-raised);
+                --color-placeholder-pulse-default-stop-2: var(--wkrd-surface-hover);
+                --color-extra-study-flashcard-loading-background: var(--wkrd-surface);
+                --color-extra-study-flashcard-placeholder-pulse-stop-1: var(--wkrd-surface-raised);
+                --color-extra-study-flashcard-placeholder-pulse-stop-2: var(--wkrd-surface-hover);
+                --color-item-spread-row-background: var(--wkrd-surface-raised);
+                --color-item-spread-row-border: var(--wkrd-border);
+                --color-item-spread-row-hover-background: var(--wkrd-surface-hover);
+                --color-item-spread-row-active-background: var(--wkrd-surface-hover);
+                --color-item-spread-graph-grid-line: var(--wkrd-border);
+                --color-level-progress-indicator-background: var(--wkrd-border);
+                --color-level-progress-bar: var(--wkrd-border);
+                --color-heat-map-cell-empty: var(--wkrd-surface);
+                --color-heat-map-cell-level-0: var(--wkrd-surface-raised);
+                --color-heat-map-cell-selected-border: var(--wkrd-focus);
+                --color-review-forecast-header-background: #423b28;
+                --color-review-forecast-bar-zero: var(--wkrd-surface-raised);
+                --color-review-forecast-bar-zero-border: var(--wkrd-border);
+                --color-review-forecast-day-hover: var(--wkrd-surface-raised);
+                --color-review-forecast-day-active: var(--wkrd-surface-hover);
+                --color-review-forecast-day-header-label: var(--wkrd-muted);
+                --color-review-forecast-priority-count: var(--wkrd-muted);
+                --color-review-forecast-increase-positive: #9bd5ac;
+                --color-study-streak-day-miss-icon: var(--wkrd-muted);
+                --color-study-streak-today-complete-background: #254b35;
+                --color-study-streak-today-complete-text: #dcf3e3;
+                --color-progress-chart-bar-background: var(--wkrd-border);
+                --color-progress-chart-metric-text: var(--wkrd-muted);
+                --color-progress-chart-metric-count: var(--wkrd-text);
+                --color-progress-chart-metric-count-background: var(--wkrd-surface-hover);
+                --color-widget-gallery-divider: var(--wkrd-border);
+                --color-widget-gallery-background: var(--wkrd-surface);
+                --color-widget-gallery-widget-background: var(--wkrd-bg);
+                --color-widget-gallery-navigation-background: var(--wkrd-surface-raised);
+                --color-widget-gallery-description: var(--wkrd-muted);
+                --color-dashboard-customization-menu-background: var(--wkrd-surface);
+                --color-dashboard-customization-menu-border: var(--wkrd-border);
+                --color-dashboard-customization-menu-divider: var(--wkrd-border);
+                --color-dashboard-customization-menu-text: var(--wkrd-text);
+                --color-dashboard-customization-row-background: var(--wkrd-surface-raised);
+                --color-dashboard-customization-row-control: var(--wkrd-muted);
+                --color-dashboard-customization-widget-container-background: var(--wkrd-bg);
+                --color-dashboard-customization-widget-container-control: var(--wkrd-muted);
+                --color-dashboard-customization-template-background: var(--wkrd-surface);
+                --color-dashboard-customization-template-hover-background: var(--wkrd-surface-hover);
+                --color-dashboard-customization-template-selected-background: #243542;
+                --color-dashboard-customization-template-disabled-background: #1a1c1f;
+                --color-dashboard-customization-template-border: var(--wkrd-border);
+                --color-dashboard-customization-template-selected-border: var(--wkrd-focus);
+                --color-dashboard-customization-template-disabled-border: var(--wkrd-border);
+                --color-dashboard-customization-template-illustration-background: var(--wkrd-bg);
+                --color-dashboard-customization-template-illustration-selected-background: #243542;
+                --color-dashboard-customization-template-illustration-border: var(--wkrd-border);
+                --color-dashboard-customization-template-illustration-selected-border: var(--wkrd-focus);
+                --color-dashboard-customization-template-illustration-bar-background: var(--wkrd-border);
+                --color-dashboard-customization-template-illustration-bar-selected-background: #54788b;
+                --color-dashboard-customization-template-illustration-bar-disabled-background: var(--wkrd-surface);
+                --color-dashboard-customization-template-illustration-bar-border: var(--wkrd-muted);
+                --color-dashboard-customization-template-illustration-bar-selected-border: var(--wkrd-focus);
+                --color-dashboard-customization-template-illustration-bar-disabled-border: var(--wkrd-border);
+                --color-dashboard-customization-template-radio: var(--wkrd-muted);
+                --color-dashboard-customization-template-radio-selected: var(--wkrd-focus);
+            }
+
+            /* Preserve each widget's identity with dark pink and blue surfaces. */
+            html.${ROOT_CLASS} :is(.todays-lessons-widget, .reviews-widget)[class] {
+                --color-widget-background: var(--wkrd-surface);
+                --color-widget-border: var(--wkrd-border);
+                --color-widget-primary-text: var(--wkrd-text);
+                --color-widget-secondary-text: var(--wkrd-muted);
+                --color-count-bubble-background: var(--wkrd-surface-raised);
+                --color-count-bubble-border: var(--wkrd-border-strong);
+                --color-count-bubble-divider: var(--wkrd-border);
+                --color-count-bubble-text: var(--wkrd-text);
+                --color-button-border: var(--wkrd-border-strong);
+                --color-button-hover-border: var(--wkrd-focus);
+                --color-button-active-border: var(--wkrd-border-strong);
+                --color-button-edge: var(--wkrd-bg);
+                --color-button-hover-edge: var(--wkrd-bg);
+                --color-button-active-edge: var(--wkrd-bg);
+            }
+
+            html.${ROOT_CLASS} .todays-lessons-widget[class] {
+                --color-widget-background: #35202d;
+                --color-widget-border: #694458;
+                --color-widget-secondary-text: #dcbacb;
+                --color-count-bubble-background: #593149;
+                --color-count-bubble-border: #80556c;
+                --color-count-bubble-text: #ffe3f1;
+            }
+
+            html.${ROOT_CLASS} .reviews-widget[class] {
+                --color-widget-background: #1d3443;
+                --color-widget-border: #42677d;
+                --color-widget-secondary-text: #b6cfdf;
+                --color-count-bubble-background: #2b4c62;
+                --color-count-bubble-border: #547f99;
+                --color-count-bubble-text: #e0f3ff;
+            }
+
+            html.${ROOT_CLASS} :is(.sitemap__section-header, .search-button, .navigation__toggle) {
+                background: var(--wkrd-surface-raised) !important;
+                color: var(--wkrd-text) !important;
+                border-color: var(--wkrd-border) !important;
+                text-shadow: none !important;
+            }
+
+            html.${ROOT_CLASS} :is(.sitemap__section-header, .search-button, .navigation__toggle):hover {
+                background: var(--wkrd-surface-hover) !important;
+            }
+
+            html.${ROOT_CLASS} .character-header--radical {
+                background: var(--color-radical-gradient) !important;
+                text-shadow: none;
+            }
+
+            html.${ROOT_CLASS} .character-header--kanji {
+                background: var(--color-kanji-gradient) !important;
+                text-shadow: none;
+            }
+
+            html.${ROOT_CLASS} .character-header--vocabulary {
+                background: var(--color-vocabulary-gradient) !important;
+                text-shadow: none;
+            }
+
+            html.${ROOT_CLASS} .subject-character {
+                --color-blue: var(--color-radical);
+                --color-blue-dark: #9ed9ed;
+                --color-blue-light: #253f4b;
+                --color-pink: var(--color-kanji);
+                --color-pink-dark: #f2b3d7;
+                --color-pink-light: #4b293b;
+                --color-purple: var(--color-vocabulary);
+                --color-purple-dark: #d4b9ee;
+                --color-purple-light: #3f2d53;
+            }
+
+            html.${ROOT_CLASS} .subject-character__characters-text {
+                color: var(--wkrd-text) !important;
+            }
+
+            html.${ROOT_CLASS} :is(.lesson-picker__section-toggle, .lesson-picker__section-toggle-all) {
+                background: var(--wkrd-surface-raised) !important;
+                color: #b8dbe9 !important;
+                border: 1px solid var(--wkrd-border);
+                border-radius: 6px;
+                padding: 6px 10px;
+            }
+
+            html.${ROOT_CLASS} .lesson-picker__subject[aria-selected=false] {
+                opacity: 0.85;
+            }
+
+            html.${ROOT_CLASS} .lesson-picker__subject[aria-selected=true] {
+                outline: 2px solid var(--wkrd-focus);
+                outline-offset: 3px;
+                border-radius: 8px;
+            }
+
+            html.${ROOT_CLASS} :is(.reader, .readers-list__item, .empty-message-container) {
+                background: var(--wkrd-surface);
+                color: var(--wkrd-text);
+            }
+
+            html.${ROOT_CLASS} :is(.subject-progress__button, .sitemap__section-header) {
+                color: var(--wkrd-text);
+                text-shadow: none;
+            }
+
+            html.${ROOT_CLASS} :is(.kana-chart__character, .kana-chart__backspace, .batch-list__item-button) {
+                background: var(--wkrd-surface-raised);
+                color: var(--wkrd-text);
+                text-shadow: none;
+            }
+
+            html.${ROOT_CLASS} .kana-chart__tab:not(.kana-chart__tab--selected):hover {
+                color: var(--wkrd-text);
+            }
+
+            html.${ROOT_CLASS} .subject-collocations__pattern-name[aria-selected=true],
+            html.${ROOT_CLASS} .subject-collocations__pattern-name[aria-selected=true]::after {
+                background: var(--wkrd-surface-hover);
+                color: var(--wkrd-text);
+                text-shadow: none;
+            }
+
+            html.${ROOT_CLASS} turbo-frame[data-show-loading=true]:not([complete])::after {
+                background-color: #151719e6;
             }
 
             html.${ROOT_CLASS},
@@ -1449,14 +1797,6 @@
                     overflow-y: auto !important;
                 }
 
-                html.${ROOT_CLASS} #wkec-context-panel,
-                html.${ROOT_CLASS} #confusionGuesserOverlay,
-                html.${ROOT_CLASS} turbo-frame#subject-info,
-                html.${ROOT_CLASS} .subject-info,
-                html.${ROOT_CLASS} .additional-content__content {
-                    display: none !important;
-                }
-
                 html.${ROOT_CLASS} .character-header {
                     min-height: 0 !important;
                     padding-top: 4px !important;
@@ -1526,13 +1866,15 @@
                 html.${ROOT_CLASS} #additional-content .additional-content__menu {
                     min-height: 42px !important;
                     align-items: stretch !important;
-                    justify-content: flex-end !important;
-                    gap: 0 !important;
+                    justify-content: center !important;
+                    flex-wrap: wrap !important;
+                    gap: 4px !important;
                     padding: 4px !important;
                 }
 
-                html.${ROOT_CLASS} #additional-content .additional-content__menu > .additional-content__menu-item:not(#option-retype) {
-                    display: none !important;
+                html.${ROOT_CLASS} #additional-content .additional-content__menu > .additional-content__menu-item {
+                    flex: 1 1 42px !important;
+                    min-width: 42px !important;
                 }
 
                 html.${ROOT_CLASS} #additional-content #option-retype {
