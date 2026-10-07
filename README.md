@@ -4,7 +4,7 @@ A site-wide Tampermonkey theme for the main WaniKani application. It keeps WaniK
 
 **[Install from Greasy Fork](https://greasyfork.org/en/scripts/599169-wanikani-dark-mode)**
 
-Current beta: **2.1.0**. Previously named WaniKani Review Dark Mode; the repository address and source filename retain the original name.
+Current beta: **2.1.0**. Previously named WaniKani Review Dark Mode; the source filename retains the original name. The former GitHub address redirects to this repository.
 
 ## Coverage
 
