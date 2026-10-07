@@ -1,52 +1,52 @@
-# WaniKani Review Dark Mode
+# WaniKani Dark Mode
 
-A Tampermonkey userscript that gives WaniKani a muted near-black theme, clearer dashboard text, and a calmer Item Info reading panel.
+A site-wide Tampermonkey theme for the main WaniKani application. It keeps WaniKani's pink, blue, and purple distinctions in darker shades, with near-black reading surfaces and light text.
 
 **[Install from Greasy Fork](https://greasyfork.org/en/scripts/599169-wanikani-review-dark-mode)**
 
-Initial public beta: **2.0.8**. Tested with Firefox and Tampermonkey.
+Current beta: **2.1.0**. Previously named WaniKani Review Dark Mode; the repository address and source filename retain the original name.
 
-## What it changes
+## Coverage
 
-- Near-black backgrounds, light text, and muted blue accents across the dashboard, reviews, and item information.
-- Better contrast for dashboard headings, descriptions, and count badges.
-- Subtle dividers and inset controls in the Meaning, Reading, and Context sections.
-- Clearer audio buttons and cleaner kanji composition cards.
-- Distinct green and red answer feedback.
+- Dashboard widgets, counts, charts, navigation, and customization controls.
+- Lesson selection and lesson slides, including dark subject colors.
+- Reviews and Extra Study, with distinct green/red answer feedback.
+- Level lists, radical/kanji/vocabulary pages, audio controls, and composition cards.
+- Settings, form fields, notices, dialogs, and shared account-page styles.
 - Matching styles for several separately installed userscripts and their settings panels.
 
-The theme does not include those other userscripts. It needs no WaniKani Open Framework or API key, makes no network requests, and does not submit answers or change grading or SRS data.
+Item Info uses subtle dividers and inset controls. Small windows use tighter spacing and a wrapping review toolbar; information panels remain available.
 
-## Install or remove
+This download contains the theme only. It needs no WaniKani Open Framework or API key, makes no network requests, and does not submit answers or change grading or SRS data. Third-party widgets and review controls are separate scripts.
+
+## Installation
 
 1. Install Tampermonkey from its official browser extension listing.
 2. Open the [Greasy Fork listing](https://greasyfork.org/en/scripts/599169-wanikani-review-dark-mode) and install the script.
 3. Reload WaniKani. Disable other WaniKani themes while trying it to avoid conflicting styles.
 
-To remove the theme, disable it in Tampermonkey and reload WaniKani. Greasy Fork is the recommended installation source; this repository contains the readable development source.
+If upgrading from a manually installed copy of **WaniKani Review Dark Mode**, check that Tampermonkey has only one enabled copy after installation. The script name changed in 2.1.0; a manual install may create a second entry.
 
-## Current limitations
+To remove the theme, disable it in Tampermonkey and reload WaniKani.
 
-Other browsers and combinations of userscripts have not been fully tested. WaniKani markup changes may require theme updates.
+## Testing and limitations
 
-The compact layout hides Item Info, context/suggestion panels, and most extra review toolbar controls in small windows. It activates at a viewport height of 560 CSS pixels or less, or at a width of 680 pixels or less combined with a height of 760 pixels or less. Enlarge the window to restore the panels. This version may not suit phone-sized windows.
+Tested in Firefox with Tampermonkey. Version 2.1.0 was checked against WaniKani's current stylesheet and visually checked on the dashboard, lesson picker, vocabulary details, settings, and level overview. Earlier review/audio/composition fixes were checked in live reviews. Browser combinations and other userscripts may still reveal gaps.
+
+The theme targets `www.wanikani.com` and `preview.wanikani.com`. The separate Community forum, third-party websites, and cross-origin embedded content are outside its scope. WaniKani markup changes may require updates.
 
 ## Development
 
-The implementation is in `review-dark-mode.user.js`. Most of the file is scoped CSS; a small JavaScript wrapper installs it, handles WaniKani's Turbo navigation, and observes answer state to preserve correct/incorrect feedback.
-
-Syntax check:
+Edit `review-dark-mode.user.js`. Most of the implementation is scoped CSS. A small JavaScript wrapper installs it, handles Turbo navigation, and observes answer state for feedback colors.
 
 ```sh
 node --check review-dark-mode.user.js
 ```
 
-Visual checks should cover the dashboard, expanded and collapsed Item Info sections, audio buttons, composition cards, answer feedback, and compact-window behavior. Avoid submitting real reviews just to test the theme.
+For bug reports, include the affected page, browser, and enabled scripts/themes. Crop account details and private notes out of screenshots.
 
-When reporting a problem, include your browser, the affected page, and enabled WaniKani scripts/themes. Crop account details and private notes out of screenshots.
-
-This project was developed with assistance from OpenAI Codex, guided by feedback and testing in daily WaniKani use. The history here begins with the first public release.
+Developed with assistance from OpenAI Codex, guided by user feedback and testing in daily WaniKani use. The repository history begins with the first public release.
 
 ## License
 
-MIT. This is an independent community project and is not affiliated with or supported by the WaniKani team. WaniKani content and artwork are not included in this repository.
+MIT. This is an independent community project, unaffiliated with and unsupported by the WaniKani team. WaniKani content and artwork are not included in this repository.
