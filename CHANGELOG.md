@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.1.0 — 2026-10-07
+
+- Renamed the script WaniKani Dark Mode to reflect its site-wide scope. Repository and file paths remain stable.
+- Extended native color coverage for lessons, settings/forms, notifications, dialogs, account surfaces, dashboard charts, and widget customization.
+- Preserved darker pink lesson, blue review, and purple vocabulary surfaces instead of making every panel neutral.
+- Improved subject-tile contrast and lesson-picker selection visibility.
+- Fixed navigation controls affected by other scripts' generic button styles.
+- Kept Item Info and extra review controls available in compact windows; the toolbar now wraps.
+- Restored the stylesheet on page navigation if WaniKani removes it.
+
 ## 2.0.8 — 2026-10-07
 
 First public beta, including improvements developed in the local theme:
@@ -10,4 +20,4 @@ First public beta, including improvements developed in the local theme:
 - Increased contrast and size of reading audio controls.
 - Removed conflicting nested borders around kanji composition cards.
 
-Known limitation: compact-window mode hides Item Info and several extra review controls. See the README for the viewport thresholds and testing scope.
+This version hid some information panels in compact windows; that limitation is removed in 2.1.0.
