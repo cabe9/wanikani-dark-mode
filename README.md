@@ -2,7 +2,7 @@
 
 A site-wide Tampermonkey theme for the main WaniKani application. It keeps WaniKani's pink, blue, and purple distinctions in darker shades, with near-black reading surfaces and light text.
 
-**[Install from Greasy Fork](https://greasyfork.org/en/scripts/599169-wanikani-review-dark-mode)**
+**[Install from Greasy Fork](https://greasyfork.org/en/scripts/599169-wanikani-dark-mode)**
 
 Current beta: **2.1.0**. Previously named WaniKani Review Dark Mode; the repository address and source filename retain the original name.
 
@@ -22,7 +22,7 @@ This download contains the theme only. It needs no WaniKani Open Framework or AP
 ## Installation
 
 1. Install Tampermonkey from its official browser extension listing.
-2. Open the [Greasy Fork listing](https://greasyfork.org/en/scripts/599169-wanikani-review-dark-mode) and install the script.
+2. Open the [Greasy Fork listing](https://greasyfork.org/en/scripts/599169-wanikani-dark-mode) and install the script.
 3. Reload WaniKani. Disable other WaniKani themes while trying it to avoid conflicting styles.
 
 If upgrading from a manually installed copy of **WaniKani Review Dark Mode**, check that Tampermonkey has only one enabled copy after installation. The script name changed in 2.1.0; a manual install may create a second entry.
