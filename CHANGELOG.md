@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.2.0 — 2026-10-07
+
+- Add a standalone Stylus UserCSS edition, generated from the same theme source, with an installation and update link on GitHub.
+- Center the entire desktop header row and align the larger search hit area with the navigation links.
+- Keep the Search button inside narrow screens, give the mobile menu close button its own sticky row, and soften the Help divider.
+- Improve contrast on the public-page signup banner.
+- Style Community Mnemonics badges without pushing cards down; align kanji and vocabulary cards and retain native spacing when the script is absent.
+- Make incorrect-answer styling take priority when both answer-state flags are present.
+- Verify the Stylus edition with other userscripts enabled and with Tampermonkey entirely disabled.
+
 ## 2.1.9 — 2026-10-07
 
 - Align the search and menu icons, remove their visible frames, and redraw the hamburger with evenly spaced lines and a centered close icon.
