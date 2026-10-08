@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.3.0 — 2026-10-07
+
+- Extend both Tampermonkey and Stylus editions to the WaniKani Community forum.
+- Add dark Discourse colors for topic lists, posts, search, menus, dialogs, editor, quotes, and code blocks.
+- Use the forum's own dark wordmark and improve timestamp and control contrast.
+- Keep Community styles separate from the learning site and run no quiz observers on the forum.
+
 ## 2.2.0 — 2026-10-07
 
 - Add a standalone Stylus UserCSS edition, generated from the same theme source, with an installation and update link on GitHub.
