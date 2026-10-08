@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.1.1 — 2026-10-07
+
+- Use WaniKani's native dark artwork for Total Days Studied while keeping the background animation and spaceship.
+- Soften the animated background and darken the green counter and date strip.
+- Apply the dark artwork to widgets loaded later and to all four native color palettes.
+- Update homepage and support links to the renamed GitHub repository.
+
 ## 2.1.0 — 2026-10-07
 
 - Renamed the script WaniKani Dark Mode to reflect its site-wide scope. Repository and file paths remain stable.
