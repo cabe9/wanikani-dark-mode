@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name        WaniKani Dark Mode
 // @namespace   CalebReviewDark
-// @version     2.1.0
+// @version     2.1.1
 // @description A site-wide near-black theme for WaniKani: dashboard, lessons, reviews, item pages, settings, and userscript panels.
-// @homepageURL https://github.com/cabe9/wanikani-review-dark-mode
-// @supportURL  https://github.com/cabe9/wanikani-review-dark-mode/issues
+// @homepageURL https://github.com/cabe9/wanikani-dark-mode
+// @supportURL  https://github.com/cabe9/wanikani-dark-mode/issues
 // @license     MIT
 // @match       https://www.wanikani.com/*
 // @match       https://preview.wanikani.com/*
@@ -21,6 +21,7 @@
     const STYLE_ID = 'wkrd-styles'
     let inputContainer = null
     let resultObserver = null
+    let artworkObserver = null
 
     installStyles()
     updateTheme()
@@ -45,8 +46,35 @@
     function updateTheme() {
         installStyles()
         document.documentElement.classList.add(ROOT_CLASS)
+        updateDashboardArtwork()
         if (isQuizPage()) startResultObserver()
         else stopResultObserver()
+    }
+
+    function updateDashboardArtwork() {
+        const path = window.location.pathname
+        if (path !== '/' && !path.startsWith('/dashboard')) {
+            artworkObserver?.disconnect()
+            artworkObserver = null
+            return
+        }
+
+        // Use WaniKani's own dark artwork, including its palette variants and
+        // animation. Avoid copying assets or depending on hashed image URLs.
+        const selector = '.days-studied-widget__background'
+        const darkClass = 'days-studied-widget__background--dark'
+        const apply = (root) => {
+            if (root.nodeType !== 1 && root.nodeType !== 9) return
+            if (root.matches?.(selector)) root.classList.add(darkClass)
+            root.querySelectorAll(selector).forEach((element) => element.classList.add(darkClass))
+        }
+        apply(document)
+        if (artworkObserver) return
+        artworkObserver = new MutationObserver((mutations) => {
+            for (const mutation of mutations) mutation.addedNodes.forEach(apply)
+        })
+        // Widgets and customization previews can arrive after the initial page.
+        artworkObserver.observe(document.documentElement, {childList: true, subtree: true})
     }
 
     function handleBeforeRender() {
@@ -461,6 +489,20 @@
                 --color-count-bubble-background: #2b4c62;
                 --color-count-bubble-border: #547f99;
                 --color-count-bubble-text: #e0f3ff;
+            }
+
+            html.${ROOT_CLASS} .days-studied-widget[class] {
+                --color-days-studied-content-border: #2e5844;
+                --color-days-studied-content-background: var(--wkrd-surface);
+                --color-days-studied-digit-filled: #e6f4ec;
+                --color-days-studied-digit-filled-background: #224d38;
+                --color-days-studied-digit-filled-border: #49765b;
+                --color-days-studied-date: #e6f4ec;
+                --color-days-studied-date-label: #c0d6c9;
+            }
+
+            html.${ROOT_CLASS} .days-studied-widget__background--dark {
+                opacity: 0.65;
             }
 
             html.${ROOT_CLASS} :is(.sitemap__section-header, .search-button, .navigation__toggle) {
