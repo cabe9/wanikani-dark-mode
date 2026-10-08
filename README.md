@@ -4,11 +4,11 @@ A site-wide Tampermonkey theme for the main WaniKani application. It keeps WaniK
 
 **[Install from Greasy Fork](https://greasyfork.org/en/scripts/599169-wanikani-dark-mode)**
 
-Current beta: **2.1.1**. Previously named WaniKani Review Dark Mode; the source filename retains the original name. The former GitHub address redirects to this repository.
+Current beta: **2.1.2**. Previously named WaniKani Review Dark Mode; the source filename retains the original name. The former GitHub address redirects to this repository.
 
 ## Coverage
 
-- Dashboard widgets, counts, charts, navigation, and customization controls, including the animated Total Days Studied panel.
+- Dashboard widgets, counts, charts, navigation, and customization controls, including the animated Total Days Studied panel with its original green counter.
 - Lesson selection and lesson slides, including dark subject colors.
 - Reviews and Extra Study, with distinct green/red answer feedback.
 - Level lists, radical/kanji/vocabulary pages, audio controls, and composition cards.
@@ -31,7 +31,7 @@ To remove the theme, disable it in Tampermonkey and reload WaniKani.
 
 ## Testing and limitations
 
-Tested in Firefox with Tampermonkey. Version 2.1.0 was checked against WaniKani's current stylesheet and visually checked on the dashboard, lesson picker, vocabulary details, settings, and level overview. Earlier review/audio/composition fixes were checked in live reviews. Version 2.1.1 was checked after reloading the dashboard: the animation still moves, and dynamically inserted widgets select dark artwork for the default, candy, pastel, and vintage palettes. Browser combinations and other userscripts may still reveal gaps.
+Tested in Firefox with Tampermonkey. Version 2.1.0 was checked against WaniKani's current stylesheet and visually checked on the dashboard, lesson picker, vocabulary details, settings, and level overview. Earlier review/audio/composition fixes were checked in live reviews. The animated background update was checked after reloading the dashboard: the animation still moves, and dynamically inserted widgets select dark artwork for the default, candy, pastel, and vintage palettes. Browser combinations and other userscripts may still reveal gaps.
 
 The theme targets `www.wanikani.com` and `preview.wanikani.com`. The separate Community forum, third-party websites, and cross-origin embedded content are outside its scope. WaniKani markup changes may require updates.
 
