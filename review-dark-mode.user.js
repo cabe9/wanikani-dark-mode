@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WaniKani Dark Mode
 // @namespace   CalebReviewDark
-// @version     2.1.3
+// @version     2.1.4
 // @description A site-wide near-black theme for WaniKani: dashboard, lessons, reviews, item pages, settings, and userscript panels.
 // @homepageURL https://github.com/cabe9/wanikani-dark-mode
 // @supportURL  https://github.com/cabe9/wanikani-dark-mode/issues
@@ -272,7 +272,7 @@
                 --color-page-header-subtitle: var(--wkrd-muted);
                 --color-page-header-description: var(--wkrd-muted);
                 --color-page-nav-header-icon: var(--wkrd-muted);
-                --color-global-header-background: var(--wkrd-surface);
+                --color-global-header-background: #3b4049;
                 --color-global-header-border: var(--wkrd-border);
                 --color-hint-background: var(--wkrd-surface-raised);
                 --color-text-shadow-light: transparent;
@@ -495,11 +495,6 @@
                 opacity: 0.65;
             }
 
-            /* Lift the native logo's dark blue and soften its pink on charcoal. */
-            html.${ROOT_CLASS} .logo__link h1::after {
-                filter: invert(0.35) brightness(1.5) saturate(0.9);
-            }
-
             html.${ROOT_CLASS} .logo__link h1::before {
                 background: var(--color-global-header-background, var(--wkrd-surface));
             }
@@ -633,6 +628,14 @@
                 border-color: var(--wkrd-border) !important;
                 box-shadow: none !important;
                 color: var(--wkrd-text) !important;
+            }
+
+            /* Give the original logo a lighter backdrop without recoloring it. */
+            html.${ROOT_CLASS} .global-header,
+            html.${ROOT_CLASS} .site-header,
+            html.${ROOT_CLASS} .global-header .navigation,
+            html.${ROOT_CLASS} .site-header .navigation {
+                background: var(--color-global-header-background) !important;
             }
 
             html.${ROOT_CLASS} .global-header a,
