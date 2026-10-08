@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WaniKani Dark Mode
 // @namespace   CalebReviewDark
-// @version     2.1.7
+// @version     2.1.9
 // @description A site-wide near-black theme for WaniKani: dashboard, lessons, reviews, item pages, settings, and userscript panels.
 // @homepageURL https://github.com/cabe9/wanikani-dark-mode
 // @supportURL  https://github.com/cabe9/wanikani-dark-mode/issues
@@ -507,14 +507,14 @@
                 transition: none;
             }
 
-            html.${ROOT_CLASS} :is(.sitemap__section-header, .search-button, .navigation__toggle) {
+            html.${ROOT_CLASS} .sitemap__section-header {
                 background: var(--wkrd-surface-raised) !important;
                 color: var(--wkrd-text) !important;
                 border-color: var(--wkrd-border) !important;
                 text-shadow: none !important;
             }
 
-            html.${ROOT_CLASS} :is(.sitemap__section-header, .search-button, .navigation__toggle):hover {
+            html.${ROOT_CLASS} .sitemap__section-header:hover {
                 background: var(--wkrd-surface-hover) !important;
             }
 
@@ -669,6 +669,117 @@
             html.${ROOT_CLASS} .user-summary button:hover {
                 background: var(--wkrd-surface-hover) !important;
                 border-color: var(--wkrd-border-strong) !important;
+            }
+
+            /* Flatten the search submit button's stacked frame into one surface. */
+            html.${ROOT_CLASS} .search__button .wk-button {
+                padding: 0 !important;
+                border: 0 !important;
+                border-radius: 8px;
+                background: transparent !important;
+                box-shadow: none !important;
+            }
+
+            html.${ROOT_CLASS} .search__button .wk-button__shadow,
+            html.${ROOT_CLASS} .search__button .wk-button__edge {
+                display: none;
+            }
+
+            html.${ROOT_CLASS} .search__button .wk-button .wk-button__content {
+                min-height: 44px;
+                padding: 10px 18px;
+                border: 0;
+                border-radius: 8px;
+                background: var(--wkrd-surface-raised);
+                color: var(--wkrd-text);
+                box-shadow: none;
+                transform: none;
+            }
+
+            html.${ROOT_CLASS} .search__button .wk-button:hover .wk-button__content {
+                background: var(--wkrd-surface-hover);
+            }
+
+            /* Match the header icons without adding visible button boxes. */
+            html.${ROOT_CLASS} :is(.search-button, .navigation__toggle)[class] {
+                width: 44px;
+                height: 44px;
+                padding: 0;
+                border: 0 !important;
+                border-radius: 8px;
+                background: transparent !important;
+                box-shadow: none !important;
+                color: var(--wkrd-text) !important;
+            }
+
+            html.${ROOT_CLASS} :is(.search-button, .navigation__toggle)[class]:hover {
+                background: transparent !important;
+            }
+
+            html.${ROOT_CLASS} .search-button--mobile {
+                top: 10px;
+                right: 60px;
+            }
+
+            html.${ROOT_CLASS} .search-button__icon {
+                flex: 0 0 auto;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0;
+                line-height: 1;
+            }
+
+            html.${ROOT_CLASS} .search-button__icon .wk-icon {
+                display: block;
+                width: 18px;
+                height: 18px;
+            }
+
+            html.${ROOT_CLASS} .navigation__toggle-icon {
+                top: 50%;
+                left: 50%;
+                width: 18px;
+                height: 14px;
+                border: 0 !important;
+                border-radius: 0;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(to bottom,
+                    var(--wkrd-text) 0 2px,
+                    transparent 2px 6px,
+                    var(--wkrd-text) 6px 8px,
+                    transparent 8px 12px,
+                    var(--wkrd-text) 12px 14px) !important;
+            }
+
+            html.${ROOT_CLASS} .navigation__toggle-icon::before,
+            html.${ROOT_CLASS} .navigation__toggle-icon::after {
+                display: none;
+            }
+
+            html.${ROOT_CLASS} .navigation--open .navigation__toggle-icon {
+                background: transparent !important;
+            }
+
+            html.${ROOT_CLASS} .navigation--open .navigation__toggle-icon::before,
+            html.${ROOT_CLASS} .navigation--open .navigation__toggle-icon::after {
+                display: block;
+                top: 6px;
+                left: 0;
+                width: 18px;
+                height: 2px;
+                border: 0;
+                border-radius: 0;
+                background: var(--wkrd-text);
+                transform-origin: center;
+            }
+
+            html.${ROOT_CLASS} .navigation--open .navigation__toggle-icon::before {
+                transform: rotate(-45deg);
+            }
+
+            html.${ROOT_CLASS} .navigation--open .navigation__toggle-icon::after {
+                transform: rotate(45deg);
             }
 
             html.${ROOT_CLASS} .wk-panel,
