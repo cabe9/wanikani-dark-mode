@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WaniKani Dark Mode
 // @namespace   CalebReviewDark
-// @version     2.1.2
+// @version     2.1.3
 // @description A site-wide near-black theme for WaniKani: dashboard, lessons, reviews, item pages, settings, and userscript panels.
 // @homepageURL https://github.com/cabe9/wanikani-dark-mode
 // @supportURL  https://github.com/cabe9/wanikani-dark-mode/issues
@@ -493,6 +493,15 @@
 
             html.${ROOT_CLASS} .days-studied-widget__background--dark {
                 opacity: 0.65;
+            }
+
+            /* Lift the native logo's dark blue and soften its pink on charcoal. */
+            html.${ROOT_CLASS} .logo__link h1::after {
+                filter: invert(0.35) brightness(1.5) saturate(0.9);
+            }
+
+            html.${ROOT_CLASS} .logo__link h1::before {
+                background: var(--color-global-header-background, var(--wkrd-surface));
             }
 
             html.${ROOT_CLASS} :is(.sitemap__section-header, .search-button, .navigation__toggle) {
