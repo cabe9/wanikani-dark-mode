@@ -4,7 +4,7 @@ A site-wide Tampermonkey theme for the main WaniKani application. It keeps WaniK
 
 **[Install from Greasy Fork](https://greasyfork.org/en/scripts/599169-wanikani-dark-mode)**
 
-Current beta: **2.1.7**. Previously named WaniKani Review Dark Mode; the source filename retains the original name. The former GitHub address redirects to this repository.
+Current beta: **2.1.9**. Previously named WaniKani Review Dark Mode; the source filename retains the original name. The former GitHub address redirects to this repository.
 
 ## Coverage
 
@@ -15,7 +15,7 @@ Current beta: **2.1.7**. Previously named WaniKani Review Dark Mode; the source 
 - Settings, form fields, notices, dialogs, and shared account-page styles.
 - Matching styles for several separately installed userscripts and their settings panels.
 
-The native header logo keeps its pink lettering and blue gator details. A white fill sits only inside the gator silhouette, with the rest of the header dark.
+The native header logo keeps its pink lettering and blue gator details. A white fill sits only inside the gator silhouette, with the rest of the header dark. Search and menu icons have matching alignment and no visible button frame; the expanded Search button uses a single flat surface.
 
 Item Info uses subtle dividers and inset controls. Small windows use tighter spacing and a wrapping review toolbar; information panels remain available.
 
@@ -33,7 +33,7 @@ To remove the theme, disable it in Tampermonkey and reload WaniKani.
 
 ## Testing and limitations
 
-Tested in Firefox with Tampermonkey. Version 2.1.0 was checked against WaniKani's current stylesheet and visually checked on the dashboard, lesson picker, vocabulary details, settings, and level overview. Earlier review/audio/composition fixes were checked in live reviews. The animated background update was checked after reloading the dashboard: the animation still moves, and dynamically inserted widgets select dark artwork for the default, candy, pastel, and vintage palettes. Browser combinations and other userscripts may still reveal gaps.
+Tested in Firefox with Tampermonkey. Version 2.1.0 was checked against WaniKani's current stylesheet and visually checked on the dashboard, lesson picker, vocabulary details, settings, and level overview. Earlier review/audio/composition fixes were checked in live reviews. The animated background update was checked after reloading the dashboard: the animation still moves, and dynamically inserted widgets select dark artwork for the default, candy, pastel, and vintage palettes. Version 2.1.9 was checked after installation: the header icons align, the menu opens and closes, and the Search submit button has no stacked frame. Browser combinations and other userscripts may still reveal gaps.
 
 The theme targets `www.wanikani.com` and `preview.wanikani.com`. The separate Community forum, third-party websites, and cross-origin embedded content are outside its scope. WaniKani markup changes may require updates.
 
