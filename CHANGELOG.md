@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.2 — 2026-10-07
+
+- Restore the native green days-studied counter and date strip to match the spaceship and other illustrations. Keep the dark animated background.
+
 ## 2.1.1 — 2026-10-07
 
 - Use WaniKani's native dark artwork for Total Days Studied while keeping the background animation and spaceship.
