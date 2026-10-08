@@ -42,6 +42,12 @@ const artwork = Object.entries(assets).map(([palette, url]) => {
     const ancestor = palette === 'default' ? '' : `.theme--${palette} `
     return `html:root ${ancestor}.days-studied-widget__background {\n    background-image: url("${url}");\n}`
 }).join('\n\n')
+// The forum gets only its own Discourse palette, never the application CSS.
+const forumTemplate = source.match(/function installCommunityStyles\(\) \{[\s\S]*?style\.textContent = `([\s\S]*?)`/)
+if (!forumTemplate) throw new Error('Could not find the Community CSS template')
+if (forumTemplate[1].includes('\\')) throw new Error('Unexpected Community CSS escape')
+const forumCss = forumTemplate[1].replaceAll('html.${ROOT_CLASS}', 'html:root').replace(/^ {12}/gm, '').trim()
+if (forumCss.includes('${')) throw new Error('Unconverted Community interpolation')
 const home = metadata('homepageURL')
 const output = `/* ==UserStyle==
 @name         ${metadata('name')}
@@ -61,6 +67,10 @@ const output = `/* ==UserStyle==
 
 @-moz-document url-prefix("https://www.wanikani.com/"), url-prefix("https://preview.wanikani.com/") {
 ${[css, '/* Native dark artwork; the site still supplies the animation and spaceship. */', artwork].join('\n\n').split('\n').map(line => line ? '    ' + line : '').join('\n')}
+}
+
+@-moz-document url-prefix("https://community.wanikani.com/") {
+${forumCss.split('\n').map(line => line ? '    ' + line : '').join('\n')}
 }
 `
 
