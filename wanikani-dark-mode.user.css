@@ -1,8 +1,8 @@
 /* ==UserStyle==
 @name         WaniKani Dark Mode
 @namespace    https://github.com/cabe9/wanikani-dark-mode
-@version      2.2.0
-@description  A site-wide near-black theme for WaniKani: dashboard, lessons, reviews, item pages, settings, and userscript panels.
+@version      2.3.0
+@description  A site-wide near-black theme for WaniKani: dashboard, lessons, reviews, item pages, settings, userscript panels, and the Community forum.
 @author       cabe9
 @homepageURL  https://github.com/cabe9/wanikani-dark-mode
 @supportURL   https://github.com/cabe9/wanikani-dark-mode/issues
@@ -2094,5 +2094,249 @@
 
     html:root .theme--vintage .days-studied-widget__background {
         background-image: url("https://assets.wanikani.com/assets/widgets/days-studied/vintage-dark-void-f607dbc5.svg");
+    }
+}
+
+@-moz-document url-prefix("https://community.wanikani.com/") {
+    /* Discourse palette: keep this separate from the learning site's selectors. */
+    html:root {
+        color-scheme: dark;
+        --csstools-color-scheme--light: ;
+        --scheme-type: dark;
+        --primary: #f3f5f6;
+        --secondary: #151719;
+        --tertiary: #86bdd4;
+        --quaternary: #eea086;
+        --header_background: #1c1f22;
+        --header_primary: #f3f5f6;
+        --primary-rgb: 243, 245, 246;
+        --secondary-rgb: 21, 23, 25;
+        --header_background-rgb: 28, 31, 34;
+        --tertiary-rgb: 134, 189, 212;
+        --primary-very-low-rgb: 28, 31, 34;
+        --primary-low-rgb: 48, 53, 58;
+        --primary-very-low: #1c1f22;
+        --primary-low: #30353a;
+        --primary-low-mid: #596169;
+        --primary-medium: #aeb6bc;
+        --primary-high: #c9cfd3;
+        --primary-very-high: #e4e8eb;
+        --primary-50: #1c1f22;
+        --primary-100: #25292d;
+        --primary-200: #30353a;
+        --primary-300: #41474d;
+        --primary-400: #596169;
+        --primary-500: #929ba2;
+        --primary-600: #aeb6bc;
+        --primary-700: #bac3ca;
+        --primary-800: #c9cfd3;
+        --primary-900: #e4e8eb;
+        --secondary-low: #c9cfd3;
+        --secondary-medium: #aeb6bc;
+        --secondary-high: #596169;
+        --secondary-very-high: #25292d;
+        --header_primary-low: #25292d;
+        --header_primary-low-mid: #41474d;
+        --header_primary-medium: #aeb6bc;
+        --header_primary-high: #c9cfd3;
+        --header_primary-very-high: #e4e8eb;
+        --tertiary-very-low: #1b2b33;
+        --tertiary-low: #203b48;
+        --tertiary-medium: #4b7b90;
+        --tertiary-high: #86bdd4;
+        --tertiary-very-high: #b6dbea;
+        --tertiary-hover: #b6dbea;
+        --tertiary-25: #18252b;
+        --tertiary-50: #1b2b33;
+        --tertiary-100: #1e323c;
+        --tertiary-200: #203b48;
+        --tertiary-300: #294956;
+        --tertiary-400: #365e70;
+        --tertiary-500: #416d80;
+        --tertiary-600: #4b7b90;
+        --tertiary-700: #659bb1;
+        --tertiary-800: #78adc3;
+        --tertiary-900: #86bdd4;
+        --quaternary-low: #422b25;
+        --highlight: #ecd49b;
+        --highlight-rgb: 236, 212, 155;
+        --highlight-bg: #3c3423;
+        --highlight-low: #3c3423;
+        --highlight-medium: #5a4b2f;
+        --highlight-high: #ecd49b;
+        --danger: #f0a3ac;
+        --danger-low: #3b2025;
+        --danger-low-mid: #5a2930;
+        --danger-medium: #d77683;
+        --danger-hover: #ffd0d6;
+        --success: #9bcaaa;
+        --success-rgb: 155, 202, 170;
+        --success-very-low: #1d2a22;
+        --success-low: #254132;
+        --success-medium: #689f7c;
+        --success-hover: #c1e7cd;
+        --love: #eea0b8;
+        --love-low: #432735;
+        --wiki: #9bcaaa;
+        --d-selected: #203b48;
+        --d-selected-text-color: #f3f5f6;
+        --d-selected-hover: #294956;
+        --d-hover: #25292d;
+        --blend-primary-secondary-5: #1c1f22;
+        --primary-med-or-secondary-med: #aeb6bc;
+        --primary-med-or-secondary-high: #aeb6bc;
+        --primary-high-or-secondary-low: #c9cfd3;
+        --primary-low-mid-or-secondary-high: #596169;
+        --primary-low-mid-or-secondary-low: #596169;
+        --primary-or-primary-low-mid: #f3f5f6;
+        --highlight-low-or-medium: #3c3423;
+        --tertiary-or-tertiary-low: #86bdd4;
+        --tertiary-low-or-tertiary-high: #203b48;
+        --tertiary-med-or-tertiary: #86bdd4;
+        --secondary-or-primary: #f3f5f6;
+        --tertiary-or-white: #f3f5f6;
+        --hljs-bg: #1c1f22;
+        --inline-code-bg: #25292d;
+        --hljs-comment: #aeb6bc;
+        --hljs-attr: #93c9e3;
+        --hljs-attribute: #dcade5;
+        --hljs-keyword: #93c9e3;
+        --hljs-title: #e9b98e;
+        --hljs-name: #e9b98e;
+        --hljs-punctuation: #c9cfd3;
+        --hljs-symbol: #bad69d;
+        --hljs-variable: #bad69d;
+        --hljs-string: #bad69d;
+        --hljs-number: #e9b98e;
+        --hljs-tag: #dcade5;
+        --hljs-addition: #9bcaaa;
+        --hljs-deletion: #f0a3ac;
+        --content-border-color: #41474d;
+        --input-border-color: #596169;
+        --d-input-bg-color: #1c1f22;
+        --d-input-text-color: #f3f5f6;
+        --d-input-focused-color: #86bdd4;
+        --d-sidebar-background: #1c1f22;
+        --d-content-background: #151719;
+        --d-category-box-background-color: #1c1f22;
+        --d-button-primary-bg-color: #294f62;
+        --d-button-primary-bg-color--hover: #36687d;
+        --d-button-primary-text-color: #f3f5f6;
+        --d-button-primary-text-color--hover: #fff;
+        --d-button-primary-icon-color: #f3f5f6;
+        --d-button-primary-icon-color--hover: #fff;
+        --d-button-danger-bg-color: #5a2930;
+        --d-button-danger-bg-color--hover: #73343f;
+        --d-button-danger-text-color: #f3f5f6;
+        --d-button-danger-icon-color: #f3f5f6;
+        --topic-timeline-border-color: #365e70;
+        --topic-timeline-handle-color: #86bdd4;
+        --chat-skeleton-animation-rgb: 28, 31, 34;
+        --calendar-normal: #1b2b33;
+        --calendar-close-to-working-hours: #203b48;
+        --calendar-in-working-hours: #294956;
+        --shadow-header: 0 1px 0 #41474d;
+        --shadow-menu-panel: 0 8px 28px #0008;
+    }
+
+    html:root,
+    html:root body {
+        background: var(--secondary);
+        color: var(--primary);
+    }
+
+    /* WaniKani-specific forum components still use fixed light-theme colors. */
+    html:root .wanikani-app-nav ul,
+    html:root #page-footer {
+        border-color: var(--content-border-color);
+    }
+    html:root .wanikani-app-nav ul li a {
+        color: var(--tertiary);
+    }
+    html:root .wanikani-app-nav ul li.wanikani-app-nav-list-header {
+        color: var(--primary-medium);
+    }
+    html:root #wanikani-promo {
+        background: var(--primary-very-low);
+        color: var(--primary-high);
+    }
+    html:root .moderator .topic-body,
+    html:root .user-main .user-stream .item.moderator-action {
+        background: #30212d;
+    }
+    /* Use the forum's own dark wordmark, preserving its artwork. */
+    html:root #site-logo.logo-big {
+        content: url("https://global.discourse-cdn.com/wanikanicommunity/original/4X/f/8/3/f831b88f48531610023b1f8f61089f62690cb6f4.png");
+    }
+    html:root :is(.relative-date, .topic-last-activity a, .topic-list .age a, .post-info .post-date, .post-info a, .topic-meta-data .names .username a) {
+        color: var(--primary-medium);
+    }
+    html:root .d-header {
+        background: var(--header_background);
+        color: var(--header_primary);
+    }
+    html:root :is(.d-modal__container, .menu-panel, .user-card, .group-card, #reply-control) {
+        background-color: var(--primary-very-low);
+        color: var(--primary);
+    }
+    html:root :is(.d-editor-textarea-wrapper, .d-editor-input, .ProseMirror) {
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+    html:root .cooked :is(pre, code),
+    html:root .d-editor-preview :is(pre, code) {
+        background-color: var(--hljs-bg);
+    }
+    html:root :is(.cooked, .d-editor-preview) :is(blockquote, aside.onebox) {
+        border-color: var(--content-border-color);
+    }
+    /* Keep generic button themes from painting the forum header controls. */
+    html:root .d-header .d-header-icons .icon {
+        background: transparent !important;
+        border: 0 !important;
+        box-shadow: none !important;
+        color: var(--header_primary) !important;
+    }
+    html:root .d-header .d-header-icons .icon:hover,
+    html:root .d-header .d-header-icons .icon[aria-expanded="true"] {
+        background: var(--primary-low) !important;
+    }
+    html:root .d-header .d-header-icons .icon .d-icon {
+        color: inherit !important;
+        fill: currentColor !important;
+    }
+    html:root .btn {
+        background-color: var(--primary-low) !important;
+        color: var(--primary) !important;
+        text-shadow: none !important;
+        box-shadow: none;
+    }
+    html:root .btn .d-icon {
+        color: inherit !important;
+    }
+    html:root .btn:hover {
+        background-color: var(--primary-300) !important;
+    }
+    html:root .btn-primary {
+        background-color: var(--d-button-primary-bg-color) !important;
+    }
+    html:root .btn-primary:hover {
+        background-color: var(--d-button-primary-bg-color--hover) !important;
+    }
+    html:root .btn-danger {
+        background-color: var(--d-button-danger-bg-color) !important;
+    }
+    html:root .btn-danger:hover {
+        background-color: var(--d-button-danger-bg-color--hover) !important;
+    }
+    html:root .btn-flat {
+        background: transparent !important;
+    }
+    html:root .btn-flat:hover {
+        background-color: var(--primary-low) !important;
+    }
+    html:root :is(a, button, input, textarea, select, [tabindex]):focus-visible {
+        outline: 2px solid var(--tertiary);
+        outline-offset: 3px;
     }
 }
