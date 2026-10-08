@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WaniKani Dark Mode
 // @namespace   CalebReviewDark
-// @version     2.1.4
+// @version     2.1.6
 // @description A site-wide near-black theme for WaniKani: dashboard, lessons, reviews, item pages, settings, and userscript panels.
 // @homepageURL https://github.com/cabe9/wanikani-dark-mode
 // @supportURL  https://github.com/cabe9/wanikani-dark-mode/issues
@@ -272,7 +272,7 @@
                 --color-page-header-subtitle: var(--wkrd-muted);
                 --color-page-header-description: var(--wkrd-muted);
                 --color-page-nav-header-icon: var(--wkrd-muted);
-                --color-global-header-background: #3b4049;
+                --color-global-header-background: var(--wkrd-surface);
                 --color-global-header-border: var(--wkrd-border);
                 --color-hint-background: var(--wkrd-surface-raised);
                 --color-text-shadow-light: transparent;
@@ -495,8 +495,18 @@
                 opacity: 0.65;
             }
 
-            html.${ROOT_CLASS} .logo__link h1::before {
-                background: var(--color-global-header-background, var(--wkrd-surface));
+            /* Keep the native pink/blue logo on a small white backing. */
+            html.${ROOT_CLASS} .logo {
+                width: auto;
+                flex: 0 0 auto;
+                padding: 6px 10px;
+                border-radius: 8px;
+                background: #fff;
+            }
+
+            html.${ROOT_CLASS} .logo__link::before,
+            html.${ROOT_CLASS} .logo__link::after {
+                background: #fff;
             }
 
             html.${ROOT_CLASS} :is(.sitemap__section-header, .search-button, .navigation__toggle) {
@@ -628,14 +638,6 @@
                 border-color: var(--wkrd-border) !important;
                 box-shadow: none !important;
                 color: var(--wkrd-text) !important;
-            }
-
-            /* Give the original logo a lighter backdrop without recoloring it. */
-            html.${ROOT_CLASS} .global-header,
-            html.${ROOT_CLASS} .site-header,
-            html.${ROOT_CLASS} .global-header .navigation,
-            html.${ROOT_CLASS} .site-header .navigation {
-                background: var(--color-global-header-background) !important;
             }
 
             html.${ROOT_CLASS} .global-header a,
