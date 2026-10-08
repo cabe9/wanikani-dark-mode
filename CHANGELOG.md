@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.3 — 2026-10-07
+
+- Soften the header logo's pink lettering and lighten its blue crab for contrast on the dark header.
+- Keep the logo's keyboard-focus backing dark.
+
 ## 2.1.2 — 2026-10-07
 
 - Restore the native green days-studied counter and date strip to match the spaceship and other illustrations. Keep the dark animated background.
