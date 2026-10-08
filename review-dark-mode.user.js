@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WaniKani Dark Mode
 // @namespace   CalebReviewDark
-// @version     2.1.6
+// @version     2.1.7
 // @description A site-wide near-black theme for WaniKani: dashboard, lessons, reviews, item pages, settings, and userscript panels.
 // @homepageURL https://github.com/cabe9/wanikani-dark-mode
 // @supportURL  https://github.com/cabe9/wanikani-dark-mode/issues
@@ -495,18 +495,16 @@
                 opacity: 0.65;
             }
 
-            /* Keep the native pink/blue logo on a small white backing. */
-            html.${ROOT_CLASS} .logo {
-                width: auto;
-                flex: 0 0 auto;
-                padding: 6px 10px;
-                border-radius: 8px;
+            /* Fill only the gator silhouette behind the site's original logo.
+               The clip follows the 309x65 native artwork, inset at its blue edge. */
+            html.${ROOT_CLASS} .logo__link h1::before {
+                top: 0;
+                height: auto;
+                aspect-ratio: 309 / 65;
+                visibility: visible;
                 background: #fff;
-            }
-
-            html.${ROOT_CLASS} .logo__link::before,
-            html.${ROOT_CLASS} .logo__link::after {
-                background: #fff;
+                clip-path: polygon(42.72% 61.54%, 42.72% 44.62%, 43.04% 44.62%, 43.04% 40.00%, 43.37% 40.00%, 43.37% 36.92%, 43.69% 36.92%, 44.01% 30.77%, 44.66% 29.23%, 44.66% 26.15%, 47.25% 16.92%, 47.25% 13.85%, 47.57% 13.85%, 47.57% 7.69%, 47.90% 7.69%, 47.90% 4.62%, 48.54% 3.08%, 48.54% 1.54%, 49.84% 1.54%, 49.84% 3.08%, 50.49% 3.08%, 50.49% 6.15%, 51.46% 9.23%, 51.46% 10.77%, 52.10% 10.77%, 52.43% 7.69%, 52.75% 7.69%, 52.75% 4.62%, 53.40% 3.08%, 53.40% 1.54%, 54.69% 1.54%, 54.69% 3.08%, 55.34% 3.08%, 55.66% 9.23%, 55.99% 9.23%, 55.99% 16.92%, 56.31% 16.92%, 56.31% 18.46%, 56.96% 18.46%, 57.93% 24.62%, 58.58% 24.62%, 58.58% 27.69%, 59.55% 30.77%, 59.55% 33.85%, 59.87% 33.85%, 60.19% 41.54%, 60.52% 41.54%, 60.52% 46.15%, 60.84% 46.15%, 60.84% 64.62%, 60.52% 64.62%, 60.52% 69.23%, 60.19% 69.23%, 60.19% 73.85%, 59.87% 73.85%, 59.55% 80.00%, 58.58% 83.08%, 58.58% 86.15%, 57.93% 86.15%, 56.96% 92.31%, 55.66% 93.85%, 55.66% 95.38%, 53.40% 96.92%, 53.40% 98.46%, 49.84% 98.46%, 49.84% 96.92%, 48.87% 96.92%, 48.87% 95.38%, 47.90% 95.38%, 47.90% 93.85%, 46.60% 92.31%, 46.28% 89.23%, 45.63% 89.23%, 44.98% 84.62%, 44.66% 84.62%, 44.66% 81.54%, 44.34% 81.54%, 44.34% 80.00%, 44.01% 80.00%, 44.01% 76.92%, 43.69% 76.92%, 43.37% 70.77%, 43.04% 70.77%, 43.04% 66.15%, 42.72% 66.15%);
+                transition: none;
             }
 
             html.${ROOT_CLASS} :is(.sitemap__section-header, .search-button, .navigation__toggle) {
