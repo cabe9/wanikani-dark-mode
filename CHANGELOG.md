@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.7 — 2026-10-07
+
+- Limit the logo's white fill to the gator silhouette, preserving the native pink lettering and blue details.
+- Remove the rectangular white backing; retain the dark header, dark animated days-studied background, and original green counter.
+
 ## 2.1.6 — 2026-10-07
 
 - Put a small white backing behind the original pink-and-blue logo and restore the dark header.
