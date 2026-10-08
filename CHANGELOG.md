@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.4 — 2026-10-07
+
+- Restore the original logo colors and lighten the header to slate instead.
+- Keep the dark animated days-studied background and the native green counter.
+
 ## 2.1.3 — 2026-10-07
 
 - Soften the header logo's pink lettering and lighten its blue crab for contrast on the dark header.
