@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WaniKani Dark Mode
 // @namespace   CalebReviewDark
-// @version     2.1.1
+// @version     2.1.2
 // @description A site-wide near-black theme for WaniKani: dashboard, lessons, reviews, item pages, settings, and userscript panels.
 // @homepageURL https://github.com/cabe9/wanikani-dark-mode
 // @supportURL  https://github.com/cabe9/wanikani-dark-mode/issues
@@ -489,16 +489,6 @@
                 --color-count-bubble-background: #2b4c62;
                 --color-count-bubble-border: #547f99;
                 --color-count-bubble-text: #e0f3ff;
-            }
-
-            html.${ROOT_CLASS} .days-studied-widget[class] {
-                --color-days-studied-content-border: #2e5844;
-                --color-days-studied-content-background: var(--wkrd-surface);
-                --color-days-studied-digit-filled: #e6f4ec;
-                --color-days-studied-digit-filled-background: #224d38;
-                --color-days-studied-digit-filled-border: #49765b;
-                --color-days-studied-date: #e6f4ec;
-                --color-days-studied-date-label: #c0d6c9;
             }
 
             html.${ROOT_CLASS} .days-studied-widget__background--dark {
