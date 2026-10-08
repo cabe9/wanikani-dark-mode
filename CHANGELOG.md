@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.9 — 2026-10-07
+
+- Align the search and menu icons, remove their visible frames, and redraw the hamburger with evenly spaced lines and a centered close icon.
+- Remove the heavy stacked frame from the Search submit button inside the expanded search panel.
+
 ## 2.1.7 — 2026-10-07
 
 - Limit the logo's white fill to the gator silhouette, preserving the native pink lettering and blue details.
