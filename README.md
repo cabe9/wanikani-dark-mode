@@ -4,7 +4,7 @@ A site-wide Tampermonkey theme for the main WaniKani application. It keeps WaniK
 
 **[Install from Greasy Fork](https://greasyfork.org/en/scripts/599169-wanikani-dark-mode)**
 
-Current beta: **2.1.2**. Previously named WaniKani Review Dark Mode; the source filename retains the original name. The former GitHub address redirects to this repository.
+Current beta: **2.1.3**. Previously named WaniKani Review Dark Mode; the source filename retains the original name. The former GitHub address redirects to this repository.
 
 ## Coverage
 
@@ -14,6 +14,8 @@ Current beta: **2.1.2**. Previously named WaniKani Review Dark Mode; the source 
 - Level lists, radical/kanji/vocabulary pages, audio controls, and composition cards.
 - Settings, form fields, notices, dialogs, and shared account-page styles.
 - Matching styles for several separately installed userscripts and their settings panels.
+
+The header logo uses softer pink lettering and a lighter blue crab for contrast against the dark header.
 
 Item Info uses subtle dividers and inset controls. Small windows use tighter spacing and a wrapping review toolbar; information panels remain available.
 
