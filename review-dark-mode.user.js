@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WaniKani Dark Mode
 // @namespace   CalebReviewDark
-// @version     2.1.9
+// @version     2.2.0
 // @description A site-wide near-black theme for WaniKani: dashboard, lessons, reviews, item pages, settings, and userscript panels.
 // @homepageURL https://github.com/cabe9/wanikani-dark-mode
 // @supportURL  https://github.com/cabe9/wanikani-dark-mode/issues
@@ -649,6 +649,43 @@
                 text-shadow: none !important;
             }
 
+            html.${ROOT_CLASS} .global-header__container {
+                align-items: center;
+            }
+
+            /* Keep the mobile Help separator quiet on the dark menu. */
+            html.${ROOT_CLASS} .sitemap--divider {
+                border-color: var(--wkrd-border) !important;
+            }
+
+            @media (max-width: 1023px) {
+                /* A sticky blank row keeps the close control clear of menu items. */
+                html.${ROOT_CLASS} .sitemap::before {
+                    content: '';
+                    display: block;
+                    position: sticky;
+                    top: 0;
+                    height: 64px;
+                    background: var(--wkrd-surface);
+                    z-index: 1;
+                }
+
+                html.${ROOT_CLASS} .navigation--open .navigation__toggle {
+                    position: fixed;
+                }
+            }
+
+            html.${ROOT_CLASS} a.callout__link[class] {
+                background: #17465d;
+                box-shadow: none;
+                color: var(--wkrd-text);
+                text-shadow: none;
+            }
+
+            html.${ROOT_CLASS} a.callout__link[class]:hover {
+                background: #205b75;
+            }
+
             html.${ROOT_CLASS} .navigation__link,
             html.${ROOT_CLASS} .navigation__button,
             html.${ROOT_CLASS} .global-header button,
@@ -672,6 +709,14 @@
             }
 
             /* Flatten the search submit button's stacked frame into one surface. */
+            html.${ROOT_CLASS} .search__query {
+                min-width: 0;
+            }
+
+            html.${ROOT_CLASS} .search__button {
+                flex: 0 0 auto;
+            }
+
             html.${ROOT_CLASS} .search__button .wk-button {
                 padding: 0 !important;
                 border: 0 !important;
@@ -719,6 +764,11 @@
             html.${ROOT_CLASS} .search-button--mobile {
                 top: 10px;
                 right: 60px;
+            }
+
+            /* The desktop navigation row is 32px tall; keep the 44px hit area centered. */
+            html.${ROOT_CLASS} .search-button--desktop {
+                margin-block: -6px;
             }
 
             html.${ROOT_CLASS} .search-button__icon {
@@ -958,6 +1008,64 @@
                 text-shadow: none !important;
             }
 
+            /* Community Mnemonics adds badges before the card content. Keep them
+               out of flow, with the same top gutter on every card in that grid. */
+            html.${ROOT_CLASS} .subject-character--grid:has(> [class*="wkcm-list-badge-cm-"]) {
+                position: relative;
+            }
+
+            html.${ROOT_CLASS} .subject-character-grid__items:has([class*="wkcm-list-badge-cm-"])
+                .subject-character--grid > .subject-character__content {
+                padding-top: 34px;
+            }
+
+            html.${ROOT_CLASS} .subject-character--grid > .subject-character__badge[class*="wkcm-list-badge-cm-"] {
+                position: absolute;
+                top: 7px;
+                left: 8px;
+                right: auto;
+                bottom: auto;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-sizing: border-box;
+                width: 20px;
+                height: 20px;
+                margin: 0;
+                padding: 0;
+                border: 0;
+                border-radius: 5px;
+                font-size: 12px;
+                line-height: 1;
+                text-shadow: none;
+                box-shadow: none;
+                transform: none !important;
+            }
+
+            html.${ROOT_CLASS} .subject-character--grid:has(> .wkcm-list-badge-cm-request)
+                > .wkcm-list-badge-cm-available {
+                left: 33px;
+            }
+
+            html.${ROOT_CLASS} :is(.wkcm-list-badge-cm-available, .wkcm-legend-badge-available) {
+                background: #254136 !important;
+                color: #baddc9 !important;
+                box-shadow: none !important;
+                text-shadow: none !important;
+            }
+
+            html.${ROOT_CLASS} :is(.wkcm-list-badge-cm-request, .wkcm-legend-badge-request) {
+                background: #4b3c22 !important;
+                color: #f2d18a !important;
+                box-shadow: none !important;
+                text-shadow: none !important;
+            }
+
+            html.${ROOT_CLASS}:has([class*="wkcm-list-badge-cm-"], [class*="wkcm-legend-badge-"])
+                .subject-character--grid .subject-character__characters {
+                padding-left: 0 !important;
+            }
+
             html.${ROOT_CLASS} .dropdown-menu,
             html.${ROOT_CLASS} .popover,
             html.${ROOT_CLASS} .menu:not(.character-header__menu),
@@ -1126,8 +1234,8 @@
                 outline: none !important;
             }
 
-            html.${ROOT_CLASS} .quiz-input__input-container[correct="true"] .quiz-input__input,
-            html.${ROOT_CLASS} .quiz-input__input-container[correct]:not([correct="false"]) .quiz-input__input {
+            html.${ROOT_CLASS} .quiz-input__input-container[correct="true"]:not([incorrect]) .quiz-input__input,
+            html.${ROOT_CLASS} .quiz-input__input-container[correct]:not([correct="false"]):not([incorrect]) .quiz-input__input {
                 background: var(--wkrd-correct) !important;
                 border-color: var(--wkrd-correct-border) !important;
                 caret-color: var(--wkrd-text) !important;
