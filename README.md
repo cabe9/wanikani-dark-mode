@@ -1,13 +1,14 @@
 # WaniKani Dark Mode
 
-A site-wide theme for Tampermonkey or Stylus for the main WaniKani application. It keeps WaniKani's pink, blue, and purple distinctions in darker shades, with near-black reading surfaces and light text.
+A site-wide theme for Tampermonkey or Stylus for WaniKani and its Community forum. It keeps WaniKani's pink, blue, and purple distinctions in darker shades, with near-black reading surfaces and light text.
 
 **[Install with Tampermonkey](https://greasyfork.org/en/scripts/599169-wanikani-dark-mode)** · **[Install with Stylus](https://raw.githubusercontent.com/cabe9/wanikani-dark-mode/main/wanikani-dark-mode.user.css)**
 
-Current beta: **2.2.0**. Previously named WaniKani Review Dark Mode; the source filename retains the original name. The former GitHub address redirects to this repository.
+Current beta: **2.3.0**. Previously named WaniKani Review Dark Mode; the source filename retains the original name. The former GitHub address redirects to this repository.
 
 ## Coverage
 
+- Community forum topic lists, posts, search, menus, and the reply editor, with the forum's native dark wordmark.
 - Dashboard widgets, counts, charts, navigation, and customization controls, including the animated Total Days Studied panel with its original green counter.
 - Lesson selection and lesson slides, including dark subject colors.
 - Reviews and Extra Study, with distinct green/red answer feedback.
@@ -47,16 +48,19 @@ Disable other WaniKani themes while trying either edition to avoid conflicting s
 
 Tested in Firefox with Tampermonkey. Version 2.1.0 was checked against WaniKani's current stylesheet and visually checked on the dashboard, lesson picker, vocabulary details, settings, and level overview. Earlier review/audio/composition fixes were checked in live reviews. The animated background update was checked after reloading the dashboard: the animation still moves, and dynamically inserted widgets select dark artwork for the default, candy, pastel, and vintage palettes. Version 2.1.9 was checked after installation: the header icons align, the menu opens and closes, and the Search submit button has no stacked frame. Version 2.2.0 was installed through Stylus 2.4.14 in Firefox and checked with the Tampermonkey theme disabled, then with Tampermonkey entirely disabled. Fourteen browser checks passed for answer feedback, undo, replaced inputs, all four artwork palettes, and animation. Dashboard and level-page layouts were checked, including header centering and all 36 kanji cards with and without Community Mnemonics. Chrome 154 with Stylus was checked on public level pages at 320px, including the menu and expanded search. Safari 26.6.2 was checked with the theme applied to the live level page, including narrow layout, the JavaScript wrapper, search bounds, and separation between the close button and menu items. The same fourteen CSS checks passed in local fixtures using WaniKani’s stylesheet in Chrome and Safari. Safari testing covered rendering and the wrapper, not extension installation.
 
-The theme targets `www.wanikani.com` and `preview.wanikani.com`. The separate Community forum, third-party websites, and cross-origin embedded content are outside its scope. WaniKani markup changes may require updates.
+The theme targets `www.wanikani.com`, `preview.wanikani.com`, and `community.wanikani.com`. Third-party websites and cross-origin embedded content are outside its scope. WaniKani markup changes may require updates.
+
+Version 2.3.0 adds a separate Discourse palette for the Community forum. The forum branch does not install learning-site CSS or quiz observers. The live topic, search panel, and post editor were checked in Firefox, the homepage and navigation in Chrome with the installed Stylus edition (including 320px), and the forum wrapper at 390px in Safari. Safari reported equal viewport and document widths, dark body/header colors, readable timestamps, and no learning-site CSS. Automated checks verify that both editions keep the forum and learning-site styles separate.
 
 ## Development
 
-Edit `review-dark-mode.user.js`, then regenerate the Stylus edition from its CSS. The build step changes activation selectors to `:root`, uses `:has()` for answer state, and adds the artwork URLs from `tools/days-studied-assets.json`. The Tampermonkey wrapper handles stylesheet installation, Turbo navigation, answer-state observation, and native artwork selection.
+Edit `review-dark-mode.user.js`, then regenerate the Stylus edition from its CSS. The build step changes activation selectors to `:root`, uses `:has()` for answer state, and adds the artwork URLs from `tools/days-studied-assets.json`. The Tampermonkey wrapper handles stylesheet installation, Turbo navigation, answer-state observation, and native artwork selection on the learning site. On Community it installs only the Discourse stylesheet. The UserCSS has separate URL sections for the learning site and forum; it references the forum's native dark logo asset.
 
 ```sh
 node --check review-dark-mode.user.js
 node tools/build-usercss.mjs
 node tools/build-usercss.mjs --check
+node tests/community-routing-check.mjs
 ```
 
 `tests/stylus-browser-check.js` can be pasted into the dashboard console with only the Stylus edition enabled. It creates and removes offscreen test elements; it does not submit answers or change study data.
