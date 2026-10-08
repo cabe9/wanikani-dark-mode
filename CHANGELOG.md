@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.6 — 2026-10-07
+
+- Put a small white backing behind the original pink-and-blue logo and restore the dark header.
+- Preserve the logo colors and native home link.
+- Keep the dark animated days-studied background and original green counter.
+
 ## 2.1.4 — 2026-10-07
 
 - Restore the original logo colors and lighten the header to slate instead.
