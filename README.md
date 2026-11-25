@@ -4,7 +4,7 @@ A site-wide theme for Tampermonkey or Stylus for WaniKani and its Community foru
 
 **[Install with Tampermonkey](https://greasyfork.org/en/scripts/599169-wanikani-dark-mode)** · **[Install with Stylus](https://raw.githubusercontent.com/cabe9/wanikani-dark-mode/main/wanikani-dark-mode.user.css)**
 
-Current beta: **2.3.0**. Previously named WaniKani Review Dark Mode; the source filename retains the original name. The former GitHub address redirects to this repository.
+Current beta: **2.3.14**. Previously named WaniKani Review Dark Mode; the source filename retains the original name. The former GitHub address redirects to this repository.
 
 ## Coverage
 

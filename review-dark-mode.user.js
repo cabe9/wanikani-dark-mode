@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WaniKani Dark Mode
 // @namespace   CalebReviewDark
-// @version     2.3.0
+// @version     2.3.14
 // @description A site-wide near-black theme for WaniKani: dashboard, lessons, reviews, item pages, settings, userscript panels, and the Community forum.
 // @homepageURL https://github.com/cabe9/wanikani-dark-mode
 // @supportURL  https://github.com/cabe9/wanikani-dark-mode/issues
@@ -20,8 +20,12 @@
     const CORRECT_CLASS = 'wkrd-correct'
     const INCORRECT_CLASS = 'wkrd-incorrect'
     const STYLE_ID = 'wkrd-styles'
+    const MIN_PROMPT_SIZE = 60
     let inputContainer = null
     let resultObserver = null
+    let quizPrompt = null
+    let cleanupQuizPrompt = null
+    let promptSize = null
     let artworkObserver = null
 
     // Discourse has its own palette and navigation. Never apply the learning
@@ -107,6 +111,7 @@
                 )
                 if (!inputContainer?.isConnected) mountInputContainer()
                 else if (resultChanged) updateResultState()
+                if (!quizPrompt?.isConnected) mountQuizPrompt()
             })
             resultObserver.observe(document.body, {
                 attributes: true,
@@ -115,6 +120,7 @@
                 subtree: true,
             })
             mountInputContainer()
+            mountQuizPrompt()
         }
 
         if (document.body) start()
@@ -125,7 +131,212 @@
         resultObserver?.disconnect()
         resultObserver = null
         inputContainer = null
+        stopPromptObserver()
+        promptSize = null
         clearResultState()
+    }
+
+    function stopPromptObserver() {
+        cleanupQuizPrompt?.()
+        cleanupQuizPrompt = null
+        quizPrompt = null
+    }
+
+    function mountQuizPrompt() {
+        stopPromptObserver()
+        quizPrompt = document.querySelector('.character-header__content > [data-quiz-header-target="characters"]')
+        if (!quizPrompt) return
+
+        const prompt = quizPrompt
+        const content = prompt.parentElement
+        const banner = content.closest('.character-header') ?? content
+        const menu = content.querySelector('.character-header__menu')
+        const navigation = menu?.querySelector('.character-header__menu-navigation')
+        const title = menu?.querySelector('.character-header__menu-title')
+        const statistics = menu?.querySelector('.character-header__menu-statistics')
+        const meaning = content.querySelector('[data-quiz-header-target="meaning"]')
+        const settings = navigation && mountPromptSizeSettings(navigation, banner, fit)
+        let shiftX = 0
+        let shiftY = 0
+        let textContext
+        let fittedFont
+        let answerFrame
+
+        function fit() {
+            // Transforms leave the native line box in place. Measure that box
+            // for both text and radical artwork, including any wrapped lines.
+            const width = prompt.offsetWidth
+            const height = prompt.offsetHeight
+            if (!width || !height) return
+
+            const bounds = content.getBoundingClientRect()
+            const rect = prompt.getBoundingClientRect()
+            const centerX = (rect.left + rect.right) / 2 - shiftX
+            const centerY = (rect.top + rect.bottom) / 2 - shiftY
+            const top = menu?.getBoundingClientRect().bottom ?? bounds.top
+            const bottom = meaning?.offsetHeight ? meaning.getBoundingClientRect().top : bounds.bottom
+            const horizontalRoom = Math.min(centerX - bounds.left, bounds.right - centerX) - 12
+            const style = getComputedStyle(prompt)
+            fittedFont = style.font
+            const gutter = parseFloat(style.getPropertyValue('--wkrd-prompt-gutter') || '2')
+            const requested = promptSize === null ? Infinity : promptSize / 100
+            // The transparent padding can extend beyond the visible prompt.
+            const padTop = parseFloat(style.paddingTop)
+            const padBottom = parseFloat(style.paddingBottom)
+            let visibleTop = height / 2 - padTop
+            let visibleBottom = height / 2 - padBottom
+
+            // A single line can use its glyph bounds. Its visible center can
+            // differ from the line center, especially when Jitai changes fonts.
+            if (!prompt.childElementCount && height - padTop - padBottom <= parseFloat(style.lineHeight) + 1 && fittedFont) {
+                textContext ??= document.createElement('canvas').getContext('2d')
+                if (textContext) {
+                    textContext.font = fittedFont
+                    const metrics = textContext.measureText(prompt.textContent.trim())
+                    const baseline = (metrics.fontBoundingBoxAscent - metrics.fontBoundingBoxDescent + padTop - padBottom) / 2
+                    const inkTop = metrics.actualBoundingBoxAscent - baseline + 1
+                    const inkBottom = metrics.actualBoundingBoxDescent + baseline + 1
+                    if (Math.abs(metrics.width - width) <= 2 && inkTop > 0 && inkBottom > 0) {
+                        visibleTop = inkTop
+                        visibleBottom = inkBottom
+                    }
+                }
+            }
+
+            const halfHeight = (visibleTop + visibleBottom) / 2
+            const inkOffset = (visibleBottom - visibleTop) / 2
+            const belowMenu = Math.min(
+                2 * horizontalRoom / width,
+                (centerY - top - gutter) / halfHeight,
+                (bottom - centerY - gutter) / halfHeight,
+            )
+            let limit = Math.max(1, belowMenu)
+            let scale = Math.min(requested, limit)
+            let inkCenterY = centerY
+            shiftX = 0
+
+            if (navigation && statistics && title && !title.childElementCount && !title.textContent.trim()) {
+                // An empty title leaves room between the navigation and counters.
+                // Only use this space when the controls really flank that area.
+                const slot = title.getBoundingClientRect()
+                const navEnd = navigation.getBoundingClientRect().right
+                const statsStart = statistics.getBoundingClientRect().left
+                if (slot.left >= navEnd - 1 && slot.right <= statsStart + 1) {
+                    const bannerBounds = banner.getBoundingClientRect()
+                    const controlsEnd = Math.max(bannerBounds.left, ...Array.from(navigation.children, child => {
+                        const control = child === settings?.element ? child.firstElementChild : child
+                        return control.getBoundingClientRect().right
+                    }))
+                    const left = Math.max(bannerBounds.left + 12, controlsEnd + 8)
+                    const right = statsStart - 8
+                    const slotTop = bannerBounds.top + 4
+                    const slotBottom = Math.min(bannerBounds.bottom - 4, meaning?.offsetHeight ? bottom - gutter : Infinity)
+                    const upperLimit = Math.min((right - left) / width, (slotBottom - slotTop) / (2 * halfHeight))
+                    limit = Math.max(limit, upperLimit)
+                    const larger = Math.min(requested, upperLimit)
+                    if (larger > scale) {
+                        scale = larger
+                        shiftX = Math.min(Math.max(centerX, left + scale * width / 2), right - scale * width / 2) - centerX
+                        inkCenterY = Math.min(Math.max(centerY, slotTop + scale * halfHeight), slotBottom - scale * halfHeight)
+                    }
+                }
+            }
+
+            shiftY = inkCenterY - centerY - scale * inkOffset
+            if (scale !== 1) prompt.style.setProperty('--wkrd-prompt-scale', scale.toFixed(3))
+            else prompt.style.removeProperty('--wkrd-prompt-scale')
+            if (shiftX || shiftY) prompt.style.setProperty('--wkrd-prompt-shift', `${shiftX}px ${shiftY}px`)
+            else prompt.style.removeProperty('--wkrd-prompt-shift')
+            settings?.update(Math.round(scale * 100), Math.ceil(limit * 100))
+        }
+
+        const resize = new ResizeObserver(fit)
+        for (const element of [prompt, content, menu, title, meaning]) {
+            if (element) resize.observe(element, {box: 'border-box'})
+        }
+        const textObserver = new MutationObserver(records => {
+            // Font changes can leave the native box the same size. Ignore our
+            // own scale and translate writes when the computed font is stable.
+            if (records.some(record => record.type !== 'attributes') || getComputedStyle(prompt).font !== fittedFont) fit()
+        })
+        textObserver.observe(prompt, {
+            childList: true, characterData: true, subtree: true,
+            attributes: true, attributeFilter: ['style', 'class', 'lang'],
+        })
+        if (title) textObserver.observe(title, {childList: true, characterData: true, subtree: true})
+        function fitAfterAnswer() {
+            window.cancelAnimationFrame(answerFrame)
+            answerFrame = window.requestAnimationFrame(fit)
+        }
+        prompt.addEventListener('pointerenter', fit)
+        prompt.addEventListener('pointerleave', fit)
+        window.addEventListener('didAnswerQuestion', fitAfterAnswer)
+        window.addEventListener('didUnanswerQuestion', fitAfterAnswer)
+        window.addEventListener('resize', fit)
+        cleanupQuizPrompt = () => {
+            resize.disconnect()
+            textObserver.disconnect()
+            prompt.removeEventListener('pointerenter', fit)
+            prompt.removeEventListener('pointerleave', fit)
+            window.removeEventListener('didAnswerQuestion', fitAfterAnswer)
+            window.removeEventListener('didUnanswerQuestion', fitAfterAnswer)
+            window.cancelAnimationFrame(answerFrame)
+            window.removeEventListener('resize', fit)
+            settings?.element.remove()
+            prompt.style.removeProperty('--wkrd-prompt-scale')
+            prompt.style.removeProperty('--wkrd-prompt-shift')
+        }
+        fit()
+    }
+
+    function mountPromptSizeSettings(navigation, banner, fit) {
+        const element = document.createElement('div')
+        element.className = 'wkrd-prompt-settings'
+        element.innerHTML = `
+            <button type="button" popovertarget="wkrd-prompt-size-panel" aria-label="Review prompt size" title="Review prompt size">Aa</button>
+            <div id="wkrd-prompt-size-panel" popover>
+                <label for="wkrd-prompt-size-range">Review prompt size</label>
+                <span class="wkrd-prompt-size-value" aria-hidden="true"></span>
+                <input id="wkrd-prompt-size-range" type="range" min="${MIN_PROMPT_SIZE}" autofocus>
+                <p></p>
+            </div>`
+        const button = element.querySelector('button')
+        const panel = element.querySelector('[popover]')
+        const slider = panel.querySelector('input')
+        const value = panel.querySelector('.wkrd-prompt-size-value')
+        const status = panel.querySelector('p')
+        slider.addEventListener('input', () => {
+            const value = slider.valueAsNumber
+            promptSize = value === Number(slider.max) ? null : value
+            fit()
+        })
+        panel.addEventListener('toggle', event => {
+            const isOpen = event.newState === 'open'
+            button.setAttribute('aria-expanded', String(isOpen))
+            if (isOpen) fit()
+        })
+        panel.addEventListener('keydown', event => event.stopPropagation())
+        navigation.append(element)
+
+        return {
+            element,
+            update(applied, maximum) {
+                slider.max = maximum
+                slider.value = Math.min(promptSize ?? maximum, maximum)
+                const fitting = promptSize === null
+                const label = fitting ? 'Fit' : `${applied}%`
+                if (value.textContent !== label) value.textContent = label
+                slider.setAttribute('aria-valuetext', fitting ? `Fit (${applied}%)` : label)
+                const message = fitting ? `Largest size that fits (${applied}%).` : 'Move all the way right to fit the banner.'
+                if (status.textContent !== message) status.textContent = message
+                if (!panel.matches(':popover-open')) return
+
+                const left = Math.min(button.getBoundingClientRect().left, window.innerWidth - panel.offsetWidth - 8)
+                const top = Math.min(banner.getBoundingClientRect().bottom + 6, window.innerHeight - panel.offsetHeight - 8)
+                panel.style.left = `${Math.max(8, left)}px`
+                panel.style.top = `${Math.max(8, top)}px`
+            },
+        }
     }
 
     function mountInputContainer() {
@@ -336,6 +547,7 @@
                 --colorSlideBorder: var(--wkrd-border);
                 --colorSlideShadow: transparent;
                 --color-subject-slide-navigation-background: var(--wkrd-surface-raised);
+                --color-subject-slide-navigation-text: var(--wkrd-muted);
                 --color-subject-slide-navigation-button-hover: var(--wkrd-surface-hover);
                 --color-section-header-border: var(--wkrd-border);
                 --color-section-subtitle: var(--wkrd-muted);
@@ -542,6 +754,89 @@
                 text-shadow: none;
             }
 
+            html.${ROOT_CLASS} .lesson-container__header .character-header__meaning {
+                text-shadow: none;
+            }
+
+            html.${ROOT_CLASS} .character-header__content > [data-quiz-header-target="characters"] {
+                scale: var(--wkrd-prompt-scale, none);
+                translate: var(--wkrd-prompt-shift, none);
+            }
+
+            html.${ROOT_CLASS} .wkrd-prompt-settings {
+                position: relative;
+                flex: 0 0 0;
+                inline-size: 0;
+                block-size: 0;
+                align-self: flex-start;
+            }
+
+            html.${ROOT_CLASS} .wkrd-prompt-settings > button {
+                position: absolute;
+                inset-block-start: 0;
+                inset-inline-start: 4px;
+                min-inline-size: 32px;
+                min-block-size: 30px;
+                padding: 0 4px;
+                border: 1px solid transparent;
+                border-radius: 5px;
+                background: transparent;
+                color: #fff;
+                font: inherit;
+                font-weight: 700;
+                cursor: pointer;
+            }
+
+            html.${ROOT_CLASS} .wkrd-prompt-settings > button:hover,
+            html.${ROOT_CLASS} .wkrd-prompt-settings > button[aria-expanded="true"] {
+                background: rgba(255, 255, 255, 0.16);
+            }
+
+            html.${ROOT_CLASS} .wkrd-prompt-settings > button:focus-visible,
+            html.${ROOT_CLASS} #wkrd-prompt-size-panel input:focus-visible {
+                outline: 2px solid var(--wkrd-focus);
+                outline-offset: 2px;
+            }
+
+            html.${ROOT_CLASS} #wkrd-prompt-size-panel {
+                position: fixed;
+                inset: auto;
+                margin: 0;
+                inline-size: min(15rem, calc(100vw - 16px));
+                max-block-size: calc(100dvh - 16px);
+                box-sizing: border-box;
+                overflow: auto;
+                padding: 12px;
+                border: 1px solid var(--wkrd-border);
+                border-radius: 8px;
+                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+                background: var(--wkrd-surface-raised);
+                color: var(--wkrd-text);
+                text-shadow: none;
+                font: 0.875rem/1.4 system-ui, sans-serif;
+            }
+
+            html.${ROOT_CLASS} #wkrd-prompt-size-panel label {
+                font-weight: 700;
+            }
+
+            html.${ROOT_CLASS} .wkrd-prompt-size-value {
+                float: inline-end;
+                font-variant-numeric: tabular-nums;
+            }
+
+            html.${ROOT_CLASS} #wkrd-prompt-size-panel input {
+                display: block;
+                inline-size: 100%;
+                margin: 10px 0 6px;
+                accent-color: var(--wkrd-focus);
+            }
+
+            html.${ROOT_CLASS} #wkrd-prompt-size-panel p {
+                margin: 0;
+                color: var(--wkrd-muted);
+            }
+
             html.${ROOT_CLASS} .subject-character {
                 --color-blue: var(--color-radical);
                 --color-blue-dark: #9ed9ed;
@@ -576,6 +871,77 @@
                 border-radius: 8px;
             }
 
+            html.${ROOT_CLASS} .subject-slides__navigation {
+                text-shadow: none;
+            }
+
+            html.${ROOT_CLASS} .subject-slides__navigation-link {
+                opacity: 1;
+            }
+
+            html.${ROOT_CLASS} .subject-slides__navigation-link:is([aria-selected="true"], :hover, :focus-visible) {
+                background-color: var(--wkrd-surface-hover);
+                color: var(--wkrd-text);
+            }
+
+            html.${ROOT_CLASS} .subject-slide__navigation[href] {
+                color: var(--color-text-link);
+            }
+
+            html.${ROOT_CLASS} .subject-slide__navigation[href]:is(:hover, :focus-visible) {
+                color: var(--wkrd-text);
+            }
+
+            html.${ROOT_CLASS} .subject-slide__content :is(.subject-section, .subject-section__content, .subject-list) {
+                background-color: transparent !important;
+            }
+
+            html.${ROOT_CLASS} .subject-slide .subject-list__item > .subject-character {
+                border-radius: var(--border-radius-normal);
+            }
+
+            html.${ROOT_CLASS} .subject-slide .subject-list__item :is(
+                .subject-character__content,
+                .subject-character__info,
+                .subject-character__meaning,
+                .subject-character__reading
+            ) {
+                background-color: transparent !important;
+            }
+
+            html.${ROOT_CLASS} .lesson-container__queue .wk-button--quiz {
+                --color-button-quiz-background: var(--wkrd-correct);
+                --color-button-quiz-hover-background: #315c43;
+                --color-button-quiz-active-background: #1d3526;
+                --color-button-quiz-border: var(--wkrd-correct-border);
+                --color-button-quiz-hover-border: var(--color-button-quiz-border);
+                --color-button-quiz-active-border: var(--color-button-quiz-border);
+                --color-button-quiz-edge: var(--color-button-quiz-active-background);
+                --color-button-quiz-hover-edge: var(--color-button-quiz-edge);
+                --color-button-quiz-active-edge: var(--color-button-quiz-edge);
+            }
+
+            html.${ROOT_CLASS} .lesson-container__queue .wk-button--quiz .wk-button__shadow {
+                background-color: transparent;
+            }
+
+            html.${ROOT_CLASS} .lesson-container .quiz-footer :is(.hotkeys-menu, .hotkeys-menu__header, .chat-button) {
+                background-color: var(--wkrd-surface-raised);
+                color: var(--wkrd-muted);
+                text-shadow: none;
+            }
+
+            html.${ROOT_CLASS} .lesson-container .quiz-footer .hotkeys-menu:is(:hover, :focus-visible, .hotkeys-menu--open) .hotkeys-menu__header,
+            html.${ROOT_CLASS} .lesson-container .quiz-footer .chat-button:is(:hover, :focus-visible) {
+                background-color: var(--wkrd-surface-hover);
+                color: var(--wkrd-text);
+            }
+
+            html.${ROOT_CLASS} .lesson-container .hotkeys-menu__key {
+                border-color: var(--wkrd-border-strong);
+                box-shadow: none;
+            }
+
             html.${ROOT_CLASS} :is(.reader, .readers-list__item, .empty-message-container) {
                 background: var(--wkrd-surface);
                 color: var(--wkrd-text);
@@ -594,13 +960,6 @@
 
             html.${ROOT_CLASS} .kana-chart__tab:not(.kana-chart__tab--selected):hover {
                 color: var(--wkrd-text);
-            }
-
-            html.${ROOT_CLASS} .subject-collocations__pattern-name[aria-selected=true],
-            html.${ROOT_CLASS} .subject-collocations__pattern-name[aria-selected=true]::after {
-                background: var(--wkrd-surface-hover);
-                color: var(--wkrd-text);
-                text-shadow: none;
             }
 
             html.${ROOT_CLASS} turbo-frame[data-show-loading=true]:not([complete])::after {
@@ -627,8 +986,47 @@
                 color: #fff;
             }
 
-            html.${ROOT_CLASS} a:not(.subject-character):not(.subject-character__link) {
+            html.${ROOT_CLASS} a:not(.subject-character):not(.subject-character__link):where(:not(.subject-slides__navigation-link, .subject-slide__navigation)) {
                 color: #86bdd4;
+            }
+
+            html.${ROOT_CLASS} .subject-collocations {
+                text-shadow: none;
+            }
+
+            html.${ROOT_CLASS} .subject-collocations__title {
+                font-weight: 400;
+                text-shadow: none !important;
+            }
+
+            html.${ROOT_CLASS} .subject-collocations a.subject-collocations__pattern-name {
+                background: var(--wkrd-surface-raised);
+                color: var(--wkrd-text);
+                text-shadow: none;
+            }
+
+            html.${ROOT_CLASS} .subject-collocations .subject-collocations__pattern-name:is(:hover, [aria-selected="true"]),
+            html.${ROOT_CLASS} .subject-collocations__pattern-name[aria-selected="true"]::after {
+                background: var(--wkrd-surface-hover);
+            }
+
+            html.${ROOT_CLASS} .subject-collocations__pattern-name[aria-selected="true"] {
+                box-shadow: inset 3px 0 var(--wkrd-focus);
+            }
+
+            html.${ROOT_CLASS} .subject-collocations__pattern-name:focus-visible {
+                outline: 2px solid var(--wkrd-focus);
+                outline-offset: -2px;
+            }
+
+            html.${ROOT_CLASS} .subject-collocations__pattern-collocation .context-sentences > .wk-text {
+                color: var(--wkrd-muted);
+                font-weight: 400;
+            }
+
+            html.${ROOT_CLASS} .subject-collocations__pattern-collocation .context-sentences > .wk-text[lang="ja"] {
+                color: var(--wkrd-text);
+                font-weight: 500;
             }
 
             html.${ROOT_CLASS} .global-header,
@@ -656,6 +1054,54 @@
             html.${ROOT_CLASS} .site-footer a {
                 color: var(--wkrd-text) !important;
                 text-shadow: none !important;
+            }
+
+            /* The transparent GIF has opaque, pale antialiasing pixels intended
+               for white paper. Multiply blends them into a muted paper surface,
+               preserving dark ink and filled shapes without bright edge halos. */
+            html.${ROOT_CLASS} .footer--illustrated {
+                background-color: #a7ada9 !important;
+                background-blend-mode: multiply;
+            }
+
+            html.${ROOT_CLASS} .footer .footer__items {
+                align-items: stretch;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0;
+                max-width: 100%;
+                margin-bottom: 16px;
+                background: rgba(28, 31, 34, 0.96);
+                border: 1px solid var(--wkrd-border);
+                border-radius: 10px;
+                overflow: hidden;
+            }
+
+            html.${ROOT_CLASS} .footer .footer__link,
+            html.${ROOT_CLASS} .footer .footer__item--copyright {
+                background: transparent;
+                color: var(--wkrd-muted) !important;
+                text-shadow: none;
+            }
+
+            html.${ROOT_CLASS} .footer .footer__item--copyright {
+                border-left: 1px solid var(--wkrd-border);
+            }
+
+            html.${ROOT_CLASS} .footer .footer__link:hover,
+            html.${ROOT_CLASS} .footer .footer__link:focus-visible {
+                background: var(--wkrd-surface-hover);
+                color: var(--wkrd-text) !important;
+                text-decoration: underline;
+            }
+
+            @media (max-width: 680px) {
+                html.${ROOT_CLASS} .footer .footer__item--copyright {
+                    width: 100%;
+                    justify-content: center;
+                    border-left: 0;
+                    border-top: 1px solid var(--wkrd-border);
+                }
             }
 
             html.${ROOT_CLASS} .global-header__container {
@@ -865,6 +1311,52 @@
                 background-color: var(--wkrd-surface-raised) !important;
             }
 
+            html.${ROOT_CLASS} .level-up-alert {
+                background-color: #4e5257 !important;
+            }
+
+            /* Both level-up SVG variants draw the caption in the bottom 11% of the image. */
+            html.${ROOT_CLASS} .level-up-alert__image picture:has(> img[src^="/level_up_image.svg?"]) {
+                position: relative;
+                display: block;
+                container-type: inline-size;
+                pointer-events: none;
+            }
+
+            html.${ROOT_CLASS} .level-up-alert__image picture > img[src^="/level_up_image.svg?"] {
+                display: block;
+                clip-path: inset(0 0 11%);
+            }
+
+            html.${ROOT_CLASS} .level-up-alert__image picture:has(> img[src^="/level_up_image.svg?"])::after {
+                content: "レベルアップおめでとう！";
+                position: absolute;
+                inset: auto 0 0;
+                color: var(--wkrd-text);
+                font-size: clamp(1rem, 3.35cqi, 3.375rem);
+                font-weight: 600;
+                line-height: 1.1;
+                text-align: center;
+                text-shadow: none;
+            }
+
+            @media (max-width: 600px) {
+                html.${ROOT_CLASS} .level-up-alert__image picture:has(> img[src^="/level_up_image.svg?"])::after {
+                    font-size: clamp(1rem, 5.05cqi, 3.375rem);
+                }
+            }
+
+            /* Forecast workload/theme variants redeclare this token on the widget,
+               overriding the value inherited from the root. Keep its artwork. */
+            html.${ROOT_CLASS} .review-forecast-widget {
+                --color-review-forecast-header-background: #423b28 !important;
+            }
+
+            /* Item Inspector's light-theme emboss remains active in its dark mode. */
+            html.${ROOT_CLASS} #WkitTopBar .WkitSmallCaps {
+                text-shadow: none !important;
+            }
+
             html.${ROOT_CLASS} .wk-panel *,
             html.${ROOT_CLASS} .item-spread-table-widget *,
             html.${ROOT_CLASS} .review-forecast *,
@@ -946,7 +1438,7 @@
                 a[href="#vocabulary"],
                 a[href="#vocabulary-items"],
                 a[href="#progress"]
-            ) {
+            ):where(:not(.subject-slides__navigation-link, .subject-slide__navigation)) {
                 background: var(--wkrd-surface-raised) !important;
                 background-image: none !important;
                 border: 1px solid var(--wkrd-border) !important;
@@ -971,7 +1463,7 @@
                 a[href="#vocabulary"],
                 a[href="#vocabulary-items"],
                 a[href="#progress"]
-            ):hover,
+            ):where(:not(.subject-slides__navigation-link, .subject-slide__navigation)):hover,
             html.${ROOT_CLASS} :is(
                 .page-nav__link,
                 .page-navigation__link,
@@ -1608,6 +2100,10 @@
                 background: transparent !important;
             }
 
+            html.${ROOT_CLASS} .subject-readings-with-audio {
+                text-shadow: none !important;
+            }
+
             /* Keep both play and stop icons legible without changing their visibility logic. */
             html.${ROOT_CLASS} .subject-section .reading-with-audio__icons {
                 box-sizing: border-box;
@@ -2082,6 +2578,7 @@
                 }
 
                 html.${ROOT_CLASS} .character-header__characters {
+                    --wkrd-prompt-gutter: 1px;
                     font-size: 3.5rem !important;
                     line-height: 1.05 !important;
                     min-height: 0 !important;

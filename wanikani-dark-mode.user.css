@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name         WaniKani Dark Mode
 @namespace    https://github.com/cabe9/wanikani-dark-mode
-@version      2.3.0
+@version      2.3.14
 @description  A site-wide near-black theme for WaniKani: dashboard, lessons, reviews, item pages, settings, userscript panels, and the Community forum.
 @author       cabe9
 @homepageURL  https://github.com/cabe9/wanikani-dark-mode
@@ -187,6 +187,7 @@
         --colorSlideBorder: var(--wkrd-border);
         --colorSlideShadow: transparent;
         --color-subject-slide-navigation-background: var(--wkrd-surface-raised);
+        --color-subject-slide-navigation-text: var(--wkrd-muted);
         --color-subject-slide-navigation-button-hover: var(--wkrd-surface-hover);
         --color-section-header-border: var(--wkrd-border);
         --color-section-subtitle: var(--wkrd-muted);
@@ -393,6 +394,89 @@
         text-shadow: none;
     }
 
+    html:root .lesson-container__header .character-header__meaning {
+        text-shadow: none;
+    }
+
+    html:root .character-header__content > [data-quiz-header-target="characters"] {
+        scale: var(--wkrd-prompt-scale, none);
+        translate: var(--wkrd-prompt-shift, none);
+    }
+
+    html:root .wkrd-prompt-settings {
+        position: relative;
+        flex: 0 0 0;
+        inline-size: 0;
+        block-size: 0;
+        align-self: flex-start;
+    }
+
+    html:root .wkrd-prompt-settings > button {
+        position: absolute;
+        inset-block-start: 0;
+        inset-inline-start: 4px;
+        min-inline-size: 32px;
+        min-block-size: 30px;
+        padding: 0 4px;
+        border: 1px solid transparent;
+        border-radius: 5px;
+        background: transparent;
+        color: #fff;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    html:root .wkrd-prompt-settings > button:hover,
+    html:root .wkrd-prompt-settings > button[aria-expanded="true"] {
+        background: rgba(255, 255, 255, 0.16);
+    }
+
+    html:root .wkrd-prompt-settings > button:focus-visible,
+    html:root #wkrd-prompt-size-panel input:focus-visible {
+        outline: 2px solid var(--wkrd-focus);
+        outline-offset: 2px;
+    }
+
+    html:root #wkrd-prompt-size-panel {
+        position: fixed;
+        inset: auto;
+        margin: 0;
+        inline-size: min(15rem, calc(100vw - 16px));
+        max-block-size: calc(100dvh - 16px);
+        box-sizing: border-box;
+        overflow: auto;
+        padding: 12px;
+        border: 1px solid var(--wkrd-border);
+        border-radius: 8px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+        background: var(--wkrd-surface-raised);
+        color: var(--wkrd-text);
+        text-shadow: none;
+        font: 0.875rem/1.4 system-ui, sans-serif;
+    }
+
+    html:root #wkrd-prompt-size-panel label {
+        font-weight: 700;
+    }
+
+    html:root .wkrd-prompt-size-value {
+        float: inline-end;
+        font-variant-numeric: tabular-nums;
+    }
+
+    html:root #wkrd-prompt-size-panel input {
+        display: block;
+        inline-size: 100%;
+        margin: 10px 0 6px;
+        accent-color: var(--wkrd-focus);
+    }
+
+    html:root #wkrd-prompt-size-panel p {
+        margin: 0;
+        color: var(--wkrd-muted);
+    }
+
     html:root .subject-character {
         --color-blue: var(--color-radical);
         --color-blue-dark: #9ed9ed;
@@ -427,6 +511,77 @@
         border-radius: 8px;
     }
 
+    html:root .subject-slides__navigation {
+        text-shadow: none;
+    }
+
+    html:root .subject-slides__navigation-link {
+        opacity: 1;
+    }
+
+    html:root .subject-slides__navigation-link:is([aria-selected="true"], :hover, :focus-visible) {
+        background-color: var(--wkrd-surface-hover);
+        color: var(--wkrd-text);
+    }
+
+    html:root .subject-slide__navigation[href] {
+        color: var(--color-text-link);
+    }
+
+    html:root .subject-slide__navigation[href]:is(:hover, :focus-visible) {
+        color: var(--wkrd-text);
+    }
+
+    html:root .subject-slide__content :is(.subject-section, .subject-section__content, .subject-list) {
+        background-color: transparent !important;
+    }
+
+    html:root .subject-slide .subject-list__item > .subject-character {
+        border-radius: var(--border-radius-normal);
+    }
+
+    html:root .subject-slide .subject-list__item :is(
+        .subject-character__content,
+        .subject-character__info,
+        .subject-character__meaning,
+        .subject-character__reading
+    ) {
+        background-color: transparent !important;
+    }
+
+    html:root .lesson-container__queue .wk-button--quiz {
+        --color-button-quiz-background: var(--wkrd-correct);
+        --color-button-quiz-hover-background: #315c43;
+        --color-button-quiz-active-background: #1d3526;
+        --color-button-quiz-border: var(--wkrd-correct-border);
+        --color-button-quiz-hover-border: var(--color-button-quiz-border);
+        --color-button-quiz-active-border: var(--color-button-quiz-border);
+        --color-button-quiz-edge: var(--color-button-quiz-active-background);
+        --color-button-quiz-hover-edge: var(--color-button-quiz-edge);
+        --color-button-quiz-active-edge: var(--color-button-quiz-edge);
+    }
+
+    html:root .lesson-container__queue .wk-button--quiz .wk-button__shadow {
+        background-color: transparent;
+    }
+
+    html:root .lesson-container .quiz-footer :is(.hotkeys-menu, .hotkeys-menu__header, .chat-button) {
+        background-color: var(--wkrd-surface-raised);
+        color: var(--wkrd-muted);
+        text-shadow: none;
+    }
+
+    html:root .lesson-container .quiz-footer .hotkeys-menu:is(:hover, :focus-visible, .hotkeys-menu--open) .hotkeys-menu__header,
+    html:root .lesson-container .quiz-footer .chat-button:is(:hover, :focus-visible) {
+        background-color: var(--wkrd-surface-hover);
+        color: var(--wkrd-text);
+    }
+
+    html:root .lesson-container .hotkeys-menu__key {
+        border-color: var(--wkrd-border-strong);
+        box-shadow: none;
+    }
+
     html:root :is(.reader, .readers-list__item, .empty-message-container) {
         background: var(--wkrd-surface);
         color: var(--wkrd-text);
@@ -445,13 +600,6 @@
 
     html:root .kana-chart__tab:not(.kana-chart__tab--selected):hover {
         color: var(--wkrd-text);
-    }
-
-    html:root .subject-collocations__pattern-name[aria-selected=true],
-    html:root .subject-collocations__pattern-name[aria-selected=true]::after {
-        background: var(--wkrd-surface-hover);
-        color: var(--wkrd-text);
-        text-shadow: none;
     }
 
     html:root turbo-frame[data-show-loading=true]:not([complete])::after {
@@ -478,8 +626,47 @@
         color: #fff;
     }
 
-    html:root a:not(.subject-character):not(.subject-character__link) {
+    html:root a:not(.subject-character):not(.subject-character__link):where(:not(.subject-slides__navigation-link, .subject-slide__navigation)) {
         color: #86bdd4;
+    }
+
+    html:root .subject-collocations {
+        text-shadow: none;
+    }
+
+    html:root .subject-collocations__title {
+        font-weight: 400;
+        text-shadow: none !important;
+    }
+
+    html:root .subject-collocations a.subject-collocations__pattern-name {
+        background: var(--wkrd-surface-raised);
+        color: var(--wkrd-text);
+        text-shadow: none;
+    }
+
+    html:root .subject-collocations .subject-collocations__pattern-name:is(:hover, [aria-selected="true"]),
+    html:root .subject-collocations__pattern-name[aria-selected="true"]::after {
+        background: var(--wkrd-surface-hover);
+    }
+
+    html:root .subject-collocations__pattern-name[aria-selected="true"] {
+        box-shadow: inset 3px 0 var(--wkrd-focus);
+    }
+
+    html:root .subject-collocations__pattern-name:focus-visible {
+        outline: 2px solid var(--wkrd-focus);
+        outline-offset: -2px;
+    }
+
+    html:root .subject-collocations__pattern-collocation .context-sentences > .wk-text {
+        color: var(--wkrd-muted);
+        font-weight: 400;
+    }
+
+    html:root .subject-collocations__pattern-collocation .context-sentences > .wk-text[lang="ja"] {
+        color: var(--wkrd-text);
+        font-weight: 500;
     }
 
     html:root .global-header,
@@ -507,6 +694,54 @@
     html:root .site-footer a {
         color: var(--wkrd-text) !important;
         text-shadow: none !important;
+    }
+
+    /* The transparent GIF has opaque, pale antialiasing pixels intended
+       for white paper. Multiply blends them into a muted paper surface,
+       preserving dark ink and filled shapes without bright edge halos. */
+    html:root .footer--illustrated {
+        background-color: #a7ada9 !important;
+        background-blend-mode: multiply;
+    }
+
+    html:root .footer .footer__items {
+        align-items: stretch;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0;
+        max-width: 100%;
+        margin-bottom: 16px;
+        background: rgba(28, 31, 34, 0.96);
+        border: 1px solid var(--wkrd-border);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    html:root .footer .footer__link,
+    html:root .footer .footer__item--copyright {
+        background: transparent;
+        color: var(--wkrd-muted) !important;
+        text-shadow: none;
+    }
+
+    html:root .footer .footer__item--copyright {
+        border-left: 1px solid var(--wkrd-border);
+    }
+
+    html:root .footer .footer__link:hover,
+    html:root .footer .footer__link:focus-visible {
+        background: var(--wkrd-surface-hover);
+        color: var(--wkrd-text) !important;
+        text-decoration: underline;
+    }
+
+    @media (max-width: 680px) {
+        html:root .footer .footer__item--copyright {
+            width: 100%;
+            justify-content: center;
+            border-left: 0;
+            border-top: 1px solid var(--wkrd-border);
+        }
     }
 
     html:root .global-header__container {
@@ -716,6 +951,52 @@
         background-color: var(--wkrd-surface-raised) !important;
     }
 
+    html:root .level-up-alert {
+        background-color: #4e5257 !important;
+    }
+
+    /* Both level-up SVG variants draw the caption in the bottom 11% of the image. */
+    html:root .level-up-alert__image picture:has(> img[src^="/level_up_image.svg?"]) {
+        position: relative;
+        display: block;
+        container-type: inline-size;
+        pointer-events: none;
+    }
+
+    html:root .level-up-alert__image picture > img[src^="/level_up_image.svg?"] {
+        display: block;
+        clip-path: inset(0 0 11%);
+    }
+
+    html:root .level-up-alert__image picture:has(> img[src^="/level_up_image.svg?"])::after {
+        content: "レベルアップおめでとう！";
+        position: absolute;
+        inset: auto 0 0;
+        color: var(--wkrd-text);
+        font-size: clamp(1rem, 3.35cqi, 3.375rem);
+        font-weight: 600;
+        line-height: 1.1;
+        text-align: center;
+        text-shadow: none;
+    }
+
+    @media (max-width: 600px) {
+        html:root .level-up-alert__image picture:has(> img[src^="/level_up_image.svg?"])::after {
+            font-size: clamp(1rem, 5.05cqi, 3.375rem);
+        }
+    }
+
+    /* Forecast workload/theme variants redeclare this token on the widget,
+       overriding the value inherited from the root. Keep its artwork. */
+    html:root .review-forecast-widget {
+        --color-review-forecast-header-background: #423b28 !important;
+    }
+
+    /* Item Inspector's light-theme emboss remains active in its dark mode. */
+    html:root #WkitTopBar .WkitSmallCaps {
+        text-shadow: none !important;
+    }
+
     html:root .wk-panel *,
     html:root .item-spread-table-widget *,
     html:root .review-forecast *,
@@ -797,7 +1078,7 @@
         a[href="#vocabulary"],
         a[href="#vocabulary-items"],
         a[href="#progress"]
-    ) {
+    ):where(:not(.subject-slides__navigation-link, .subject-slide__navigation)) {
         background: var(--wkrd-surface-raised) !important;
         background-image: none !important;
         border: 1px solid var(--wkrd-border) !important;
@@ -822,7 +1103,7 @@
         a[href="#vocabulary"],
         a[href="#vocabulary-items"],
         a[href="#progress"]
-    ):hover,
+    ):where(:not(.subject-slides__navigation-link, .subject-slide__navigation)):hover,
     html:root :is(
         .page-nav__link,
         .page-navigation__link,
@@ -1459,6 +1740,10 @@
         background: transparent !important;
     }
 
+    html:root .subject-readings-with-audio {
+        text-shadow: none !important;
+    }
+
     /* Keep both play and stop icons legible without changing their visibility logic. */
     html:root .subject-section .reading-with-audio__icons {
         box-sizing: border-box;
@@ -1933,6 +2218,7 @@
         }
 
         html:root .character-header__characters {
+            --wkrd-prompt-gutter: 1px;
             font-size: 3.5rem !important;
             line-height: 1.05 !important;
             min-height: 0 !important;

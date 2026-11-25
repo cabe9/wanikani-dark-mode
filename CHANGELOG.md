@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.3.14 — 2026-11-25
+
+- Give the dashboard’s level-up banner a gray background and a readable Japanese caption. Fix the close button so it accepts clicks.
+- Remove the white text shadow from kana and audio labels in the Reading section.
+- Fit quiz prompts to the available space and add an **Aa** size control in the userscript.
+- Improve contrast in Item Info, lesson navigation, and dashboard widgets.
+
 ## 2.3.0 — 2026-10-07
 
 - Extend both Tampermonkey and Stylus editions to the WaniKani Community forum.
